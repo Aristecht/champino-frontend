@@ -1,0 +1,10 @@
+mutation CreateCategory($data: CreateCategoryInput!) {
+  createCategory(data: $data) {
+    id
+    name
+    slug
+    imageUrl
+    parentId
+    createdAt
+  }
+}

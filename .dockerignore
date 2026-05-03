@@ -1,0 +1,16 @@
+.git
+.gitignore
+.next
+.turbo
+.vscode
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+coverage
+dist
+.env
+.env.*
+Dockerfile*
+README.md

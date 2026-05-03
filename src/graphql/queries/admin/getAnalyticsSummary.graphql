@@ -1,0 +1,20 @@
+query GetAnalyticsSummary($from: String!, $to: String!) {
+  getAnalyticsSummary(from: $from, to: $to) {
+    totalRevenue
+    totalOrders
+    newCustomers
+    avgOrderValue
+    conversionRate
+    revenueByDay {
+      date
+      revenue
+      ordersCount
+    }
+    topProducts {
+      productId
+      productName
+      totalSold
+      totalRevenue
+    }
+  }
+}

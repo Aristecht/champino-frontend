@@ -1,0 +1,17 @@
+query FindAllCategories {
+  findAllCategories {
+    id
+    name
+    slug
+    imageUrl
+    parentId
+    children {
+      id
+      name
+      slug
+      imageUrl
+      createdAt
+    }
+    createdAt
+  }
+}

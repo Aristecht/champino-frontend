@@ -1,0 +1,43 @@
+query AdminGetOrder($orderId: String!) {
+  adminGetOrder(orderId: $orderId) {
+    id
+    status
+    totalAmount
+    discountAmount
+    createdAt
+    note
+    userId
+    items {
+      id
+      quantity
+      priceAtOrder
+      subtotal
+      variantName
+      product {
+        id
+        name
+        images
+      }
+    }
+    shipping {
+      fullName
+      phone
+      city
+      street
+      building
+      apartment
+      postalCode
+      deliveryType
+      branchId
+    }
+    payment {
+      id
+      method
+      status
+      amount
+      currency
+      paidAt
+      createdAt
+    }
+  }
+}

@@ -1,0 +1,43 @@
+query GetMyOrders($filter: FilterOrderInput) {
+  getMyOrders(filter: $filter) {
+    data {
+      id
+      status
+      totalAmount
+      discountAmount
+      createdAt
+      note
+      items {
+        id
+        quantity
+        priceAtOrder
+        subtotal
+        variantName
+        product {
+          id
+          name
+          images
+        }
+      }
+      shipping {
+        fullName
+        phone
+        city
+        street
+        building
+        apartment
+        deliveryType
+      }
+      payment {
+        method
+        status
+        amount
+        currency
+        paidAt
+      }
+    }
+    total
+    page
+    limit
+  }
+}

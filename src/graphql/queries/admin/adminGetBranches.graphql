@@ -1,0 +1,14 @@
+query AdminGetBranches {
+  adminGetBranches {
+    id
+    name
+    city
+    address
+    phone
+    workingHours
+    isActive
+    latitude
+    longitude
+    createdAt
+  }
+}

@@ -1,0 +1,15 @@
+query GetProductReviews($productId: String!) {
+  getProductReviews(productId: $productId) {
+    total
+    avgRating
+    data {
+      id
+      userId
+      rating
+      title
+      text
+      isVerified
+      createdAt
+    }
+  }
+}

@@ -1,0 +1,27 @@
+"use client";
+
+import { cn } from "@/utils/tw-merge";
+import { Separator as SeparatorPrimitive } from "radix-ui";
+import { ComponentProps } from "react";
+
+function Separator({
+  className,
+  orientation = "horizontal",
+  decorative = true,
+  ...props
+}: ComponentProps<typeof SeparatorPrimitive.Root>) {
+  return (
+    <SeparatorPrimitive.Root
+      data-slot="separator"
+      decorative={decorative}
+      orientation={orientation}
+      className={cn(
+        "bg-muted-foreground/40 shrink-0 data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export { Separator };

@@ -1,0 +1,24 @@
+query FindProductById($id: String!) {
+  findProductById(id: $id) {
+    id
+    name
+    price
+    stock
+    isDraft
+    isPublished
+    categoryId
+    description
+    discountPercent
+    createdAt
+    updatedAt
+    category {
+      id
+      name
+    }
+    medias {
+      id
+      url
+      mediaType
+    }
+  }
+}

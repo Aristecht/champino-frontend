@@ -1,0 +1,14 @@
+mutation AdminCreateBranch($data: CreateBranchInput!) {
+  adminCreateBranch(data: $data) {
+    id
+    name
+    city
+    address
+    phone
+    workingHours
+    isActive
+    latitude
+    longitude
+    createdAt
+  }
+}

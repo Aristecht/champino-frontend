@@ -1,0 +1,9 @@
+mutation UpdateCategory($id: String!, $data: UpdateCategoryInput!) {
+  updateCategory(id: $id, data: $data) {
+    id
+    name
+    slug
+    imageUrl
+    updatedAt
+  }
+}

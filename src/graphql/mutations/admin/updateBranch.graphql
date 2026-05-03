@@ -1,0 +1,14 @@
+mutation AdminUpdateBranch($id: String!, $data: UpdateBranchInput!) {
+  adminUpdateBranch(id: $id, data: $data) {
+    id
+    name
+    city
+    address
+    phone
+    workingHours
+    isActive
+    latitude
+    longitude
+    createdAt
+  }
+}

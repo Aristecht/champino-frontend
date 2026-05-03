@@ -1,0 +1,10 @@
+mutation AdminUpdateOrderStatus(
+  $orderId: String!
+  $data: UpdateOrderStatusInput!
+) {
+  adminUpdateOrderStatus(orderId: $orderId, data: $data) {
+    id
+    status
+    updatedAt
+  }
+}

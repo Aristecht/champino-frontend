@@ -1,0 +1,17 @@
+mutation LoginUser($data: LoginInput!) {
+  loginUser(data: $data) {
+    message
+    user {
+      id
+      username
+      email
+      avatar
+      role
+      isEmailVerified
+      isTotpEnabled
+      isVerified
+      pendingNewEmail
+      createdAt
+    }
+  }
+}

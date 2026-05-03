@@ -1,0 +1,7 @@
+mutation ToggleProductPublish($id: String!) {
+  toggleProductPublish(id: $id) {
+    id
+    isPublished
+    isDraft
+  }
+}

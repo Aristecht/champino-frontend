@@ -170,9 +170,7 @@ export function CreateAccountForm() {
               className="w-full"
               disabled={isLoadingCreate}
               onClick={() => {
-                // OAuth endpoint is at backend root, not under /api
-                const backendUrl = process.env.NEXT_PUBLIC_API_URL?.replace("/api", "") || "http://localhost:4000";
-                window.location.href = `${backendUrl}/oauth/google`;
+                window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/oauth/google`;
               }}
             >
               <svg

@@ -204,9 +204,10 @@ export function LoginAccountForm() {
             disabled={isLoadingLogin}
             onClick={() => {
               // OAuth endpoint is at backend root, not under /api
-              const backendUrl =
-                process.env.NEXT_PUBLIC_API_URL?.replace("/api", "") ||
-                "http://localhost:4000";
+              const backendUrl = process.env.NEXT_PUBLIC_API_URL?.replace(
+                "/api",
+                ""
+              );
               window.location.href = `${backendUrl}/oauth/google`;
             }}
           >

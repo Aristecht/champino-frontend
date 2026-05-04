@@ -43,6 +43,10 @@ export const metadata: Metadata = {
   applicationName: "ЧАМПИНО ZOO",
   authors: [{ name: "ЧАМПИНО ZOO", url: siteUrl }],
   category: "shopping",
+  icons: {
+    icon: [{ url: "/images/logo.png", type: "image/png" }],
+    apple: "/images/logo.png",
+  },
   alternates: {
     canonical: "/",
   },

@@ -203,7 +203,11 @@ export function LoginAccountForm() {
             className="w-full"
             disabled={isLoadingLogin}
             onClick={() => {
-              window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/oauth/google`;
+              // OAuth endpoint is at backend root, not under /api
+              const backendUrl =
+                process.env.NEXT_PUBLIC_API_URL?.replace("/api", "") ||
+                "http://localhost:4000";
+              window.location.href = `${backendUrl}/oauth/google`;
             }}
           >
             <svg

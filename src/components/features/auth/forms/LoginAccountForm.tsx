@@ -203,11 +203,8 @@ export function LoginAccountForm() {
             className="w-full"
             disabled={isLoadingLogin}
             onClick={() => {
-              // OAuth endpoint is at backend root, not under /api
-              const backendUrl = process.env.NEXT_PUBLIC_API_URL?.replace(
-                "/api",
-                ""
-              );
+              const backendUrl =
+                process.env.NEXT_PUBLIC_API_URL || "https://champino.org/api";
               window.location.href = `${backendUrl}/oauth/google`;
             }}
           >

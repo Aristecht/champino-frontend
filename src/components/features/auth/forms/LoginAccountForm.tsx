@@ -52,6 +52,7 @@ export function LoginAccountForm() {
       if (data.loginUser.user?.isTotpEnabled && data.loginUser.message) {
         setIsShowTwoFactor(true);
       } else if (data.loginUser.message) {
+        router.push("/");
         toast.info(data.loginUser.message);
       } else {
         router.push("/");

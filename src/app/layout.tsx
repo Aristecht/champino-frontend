@@ -16,8 +16,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://champino.kz";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "ЧАМПИНО ZOO — зоомагазин в Атырау",
-    template: "%s | ЧАМПИНО ZOO",
+    default: "ЧАМПИНО — зоомагазин в Атырау",
+    template: "%s | ЧАМПИНО",
   },
   description:
     "ЧАМПИНО ZOO — зоомагазин №1 в Атырау. Корма, лакомства, наполнители, игрушки и аксессуары для кошек, собак и других животных. Программа лояльности со скидками до 10%. Быстрая доставка, оплата онлайн и при получении.",

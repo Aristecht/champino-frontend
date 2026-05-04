@@ -1,6 +1,6 @@
 {
   "common": {
-    "shopName": "ЧАМПИНО ZOO",
+    "shopName": "ЧАМПИНО",
     "home": "Главная",
     "catalog": "Каталог",
     "sales": "Акции",
@@ -41,6 +41,9 @@
     "emailLabel": "Email",
     "emailVerified": "Email подтверждён",
     "emailNotVerified": "Email не подтверждён",
+    "verifyEmail": "Подтвердить почту",
+    "verificationEmailSent": "Письмо с подтверждением отправлено",
+    "verificationEmailError": "Не удалось отправить письмо",
     "memberSince": "С нами с",
     "saveEmail": "Сохранить email",
     "emailSaved": "Запрос на смену email отправлен",
@@ -382,6 +385,9 @@
       "errorToast": "Не удалось создать аккаунт. Попробуйте снова.",
       "successTitle": "Письмо отправлено!",
       "successDescription": "Мы отправили письмо для подтверждения на вашу почту. Проверьте входящие.",
+      "accountCreatedTitle": "Аккаунт создан — можно войти!",
+      "accountCreatedDesc": "Для полноценной работы рекомендуем подтвердить почту. Письмо уже у вас во входящих.",
+      "goToLogin": "Перейти ко входу",
       "username": "Имя пользователя",
       "usernamePlaceholder": "ivan_petrov",
       "email": "Email",

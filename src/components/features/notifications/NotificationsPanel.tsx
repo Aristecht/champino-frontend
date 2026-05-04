@@ -132,15 +132,17 @@ const TYPE_TITLE_RU: Record<string, string> = {
 };
 
 const STATUS_RU: Record<string, string> = {
-  CONFIRMED: "подтвержден",
-  SHIPPED: "отправлен",
-  DELIVERED: "доставлен",
-  COMPLETED: "завершен",
-  CANCELLED: "отменен",
-  REFUNDED: "возвращен",
-  PROCESSING: "в обработке",
-  PENDING: "ожидает обработки",
-  PAID: "оплачен",
+  READY_FOR_PICKUP: "Готов к выдаче",
+  ASSEMBLING: "Собирается",
+  CONFIRMED: "Подтверждён",
+  SHIPPED: "Отправлен",
+  DELIVERED: "Доставлен",
+  COMPLETED: "Завершён",
+  CANCELLED: "Отменён",
+  REFUNDED: "Возвращён",
+  PROCESSING: "В обработке",
+  PENDING: "Ожидает обработки",
+  PAID: "Оплачен",
 };
 
 function formatNotificationTitle(type: string) {

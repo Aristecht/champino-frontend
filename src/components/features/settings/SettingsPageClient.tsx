@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { gql } from "@apollo/client";
 import { useMutation, useQuery } from "@apollo/client/react";
-import { Bell, KeyRound, ShieldCheck, User2 } from "lucide-react";
+import { useResendVerificationEmailMutation } from "@/generated/output";
+import { Bell, KeyRound, MailCheck, ShieldCheck, User2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -102,6 +103,15 @@ export function SettingsPageClient() {
   const [changePassword, { loading: isSavingPassword }] = useMutation(
     CHANGE_PASSWORD_MUTATION
   );
+  const [resendVerification, { loading: isResendingVerification }] =
+    useResendVerificationEmailMutation({
+      onCompleted() {
+        toast.success(t("verificationEmailSent"));
+      },
+      onError() {
+        toast.error(t("verificationEmailError"));
+      },
+    });
   const [changeNotificationSettings, { loading: isSavingNotifications }] =
     useMutation(CHANGE_NOTIFICATION_SETTINGS_MUTATION);
   const { subscribe, unsubscribe, isSupported, currentPermission } =
@@ -252,6 +262,18 @@ export function SettingsPageClient() {
                 {new Date(profile.createdAt).toLocaleDateString()}
               </span>
             </div>
+            {!profile.isEmailVerified && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="mt-1 w-full gap-2"
+                disabled={isResendingVerification}
+                onClick={() => resendVerification()}
+              >
+                <MailCheck className="h-4 w-4" />
+                {t("verifyEmail")}
+              </Button>
+            )}
           </div>
         </SettingsCard>
 

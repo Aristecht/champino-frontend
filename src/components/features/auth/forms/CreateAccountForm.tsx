@@ -27,6 +27,7 @@ import {
   AlertTitle,
 } from "@/components/common/ui/Alert";
 import { MailCheck } from "lucide-react";
+import Link from "next/link";
 
 export function CreateAccountForm() {
   const t = useTranslations("auth.createAccount");
@@ -48,8 +49,13 @@ export function CreateAccountForm() {
     onCompleted() {
       setIsSuccess(true);
     },
-    onError() {
-      toast.error(t("errorToast"));
+    onError(error) {
+      const message = error?.message;
+      if (message === "Эта почта уже занята") {
+        toast.error("Эта почта уже занята");
+      } else {
+        toast.error(message ?? t("errorToast"));
+      }
     },
   });
 
@@ -64,11 +70,25 @@ export function CreateAccountForm() {
       backButtonHref="/account/login"
     >
       {isSuccess ? (
-        <Alert variant="success">
-          <MailCheck className="size-5" />
-          <AlertTitle>{t("successTitle")}</AlertTitle>
-          <AlertDescription>{t("successDescription")}</AlertDescription>
-        </Alert>
+        <div className="space-y-3">
+          <Alert variant="success">
+            <MailCheck className="size-5" />
+            <AlertTitle>{t("successTitle")}</AlertTitle>
+            <AlertDescription>{t("successDescription")}</AlertDescription>
+          </Alert>
+          <div className="bg-muted/50 rounded-xl border p-4 text-sm">
+            <p className="font-medium">{t("accountCreatedTitle")}</p>
+            <p className="text-muted-foreground mt-1">
+              {t("accountCreatedDesc")}
+            </p>
+            <Link
+              href="/account/login"
+              className="text-primary mt-3 inline-block font-medium hover:underline"
+            >
+              {t("goToLogin")}
+            </Link>
+          </div>
+        </div>
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-y-4">

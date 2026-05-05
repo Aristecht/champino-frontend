@@ -181,6 +181,7 @@
       "title": "Checkout",
       "helpText": "Choose a convenient delivery option and confirm your order.",
       "onlinePaymentsStatus": "Kaspi Pay and Halyk Ekvayring are under development. Cash on delivery is currently available.",
+      "courierCostHint": "🚚 Courier delivery — 1,000 ₸. Paid to the courier in cash upon receipt.",
       "deliveryCourier": "Courier",
       "deliveryPickup": "Pickup",
       "paymentCod": "Cash on delivery",
@@ -533,7 +534,7 @@
       "delivery": {
         "0": {
           "title": "Courier delivery",
-          "text": "Order statuses: Processing → Packing → In transit → Delivered."
+          "text": "Delivery cost — 1,000 ₸, paid to the courier upon receipt. Order statuses: Processing → Packing → In transit → Delivered."
         },
         "1": {
           "title": "Pickup",

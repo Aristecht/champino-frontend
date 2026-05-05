@@ -141,37 +141,42 @@ export function CheckoutFormFields({
       </p>
 
       {deliveryType === DeliveryType.Courier ? (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <input
-            value={city}
-            onChange={(e) => onCityChange(e.target.value)}
-            placeholder={t("city")}
-            className={fieldClassName}
-          />
-          <input
-            value={street}
-            onChange={(e) => onStreetChange(e.target.value)}
-            placeholder={t("street")}
-            className={fieldClassName}
-          />
-          <input
-            value={building}
-            onChange={(e) => onBuildingChange(e.target.value)}
-            placeholder={t("building")}
-            className={fieldClassName}
-          />
-          <input
-            value={apartment}
-            onChange={(e) => onApartmentChange(e.target.value)}
-            placeholder={t("apartment")}
-            className={fieldClassName}
-          />
-          <input
-            value={postalCode}
-            onChange={(e) => onPostalCodeChange(e.target.value)}
-            placeholder={t("postalCode")}
-            className={`${fieldClassName} sm:col-span-2`}
-          />
+        <div className="space-y-3">
+          <p className="text-muted-foreground rounded-xl bg-amber-50 px-3 py-2 text-xs dark:bg-amber-950/30">
+            {t("courierCostHint")}
+          </p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <input
+              value={city}
+              onChange={(e) => onCityChange(e.target.value)}
+              placeholder={t("city")}
+              className={fieldClassName}
+            />
+            <input
+              value={street}
+              onChange={(e) => onStreetChange(e.target.value)}
+              placeholder={t("street")}
+              className={fieldClassName}
+            />
+            <input
+              value={building}
+              onChange={(e) => onBuildingChange(e.target.value)}
+              placeholder={t("building")}
+              className={fieldClassName}
+            />
+            <input
+              value={apartment}
+              onChange={(e) => onApartmentChange(e.target.value)}
+              placeholder={t("apartment")}
+              className={fieldClassName}
+            />
+            <input
+              value={postalCode}
+              onChange={(e) => onPostalCodeChange(e.target.value)}
+              placeholder={t("postalCode")}
+              className={`${fieldClassName} sm:col-span-2`}
+            />
+          </div>
         </div>
       ) : (
         <div className="space-y-3">

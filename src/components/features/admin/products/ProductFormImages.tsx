@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { ImagePlus, Trash2 } from "lucide-react";
-import { type MediaItem } from "../../../../../components/features/admin/products/productFormHelpers";
+import { type MediaItem } from "./productFormHelpers";
 
 interface ProductFormImagesProps {
   images: MediaItem[];
@@ -50,13 +50,13 @@ export function ProductFormImages({
           {images.map((img, i) => (
             <div
               key={i}
-              className="group relative aspect-square overflow-hidden rounded-md"
+              className="bg-muted/40 group relative aspect-square overflow-hidden rounded-md"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={img.localUrl}
                 alt=""
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               />
               <button
                 type="button"

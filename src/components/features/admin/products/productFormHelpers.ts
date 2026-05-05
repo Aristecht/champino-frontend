@@ -16,6 +16,18 @@ export type MediaItem = {
   mediaId?: string;
 };
 
+function resolveApiBaseUrl() {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+
+  if (typeof window !== "undefined") {
+    return `${window.location.origin}/api`;
+  }
+
+  return "http://localhost:4000/api";
+}
+
 export function remoteToMediaItem(url: string): MediaItem {
   return { localUrl: storageUrl(url) ?? url, file: null, remoteUrl: url };
 }
@@ -24,12 +36,14 @@ export async function uploadImages(
   productId: string,
   files: File[]
 ): Promise<string[]> {
+  const apiBaseUrl = resolveApiBaseUrl();
   const fd = new FormData();
   files.forEach((f) => fd.append("images", f));
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}/media/images`,
-    { method: "POST", body: fd, credentials: "include" }
-  );
+  const res = await fetch(`${apiBaseUrl}/products/${productId}/media/images`, {
+    method: "POST",
+    body: fd,
+    credentials: "include",
+  });
   if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
   const data: MediaObject[] = await res.json();
   return (Array.isArray(data) ? data : []).map((item) =>
@@ -41,12 +55,14 @@ export async function uploadVideo(
   productId: string,
   file: File
 ): Promise<string> {
+  const apiBaseUrl = resolveApiBaseUrl();
   const fd = new FormData();
   fd.append("video", file);
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}/media/video`,
-    { method: "POST", body: fd, credentials: "include" }
-  );
+  const res = await fetch(`${apiBaseUrl}/products/${productId}/media/video`, {
+    method: "POST",
+    body: fd,
+    credentials: "include",
+  });
   if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
   const data: MediaObject = await res.json();
   return data.url;
@@ -56,8 +72,9 @@ export async function deleteMedia(
   productId: string,
   mediaId: string
 ): Promise<void> {
+  const apiBaseUrl = resolveApiBaseUrl();
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products/${productId}/media/${mediaId}`,
+    `${apiBaseUrl}/products/${productId}/media/${mediaId}`,
     { method: "DELETE", credentials: "include" }
   );
   if (!res.ok) throw new Error(`Delete failed: ${res.status}`);

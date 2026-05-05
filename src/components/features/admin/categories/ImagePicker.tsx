@@ -37,7 +37,7 @@ export function ImagePicker({ value, onChange }: ImagePickerProps) {
           <img
             src={preview}
             alt="preview"
-            className="h-24 w-24 rounded-md object-cover"
+            className="bg-muted h-24 w-24 rounded-md object-contain"
           />
           <button
             type="button"

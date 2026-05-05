@@ -164,7 +164,7 @@ export function AdminNewsForm({ initial, saving, onSubmit, onCancel }: Props) {
               <img
                 src={previewImage}
                 alt="cover"
-                className="h-40 w-full object-cover"
+                className="bg-muted h-40 w-full object-contain"
               />
             </div>
           )}

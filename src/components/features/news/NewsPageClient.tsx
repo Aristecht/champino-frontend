@@ -75,7 +75,7 @@ export function NewsPageClient() {
       : allPosts.filter((p) => p.tags.includes(activeTag));
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8 px-4 py-10 sm:px-6">
+    <div className="max-w-4xl space-y-8 px-4 py-10 sm:px-6">
       {/* Header */}
       <div className="flex items-start gap-4">
         <div className="bg-primary/10 text-primary flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl">

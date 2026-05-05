@@ -27,6 +27,7 @@ query GetMyOrders($filter: FilterOrderInput) {
         building
         apartment
         deliveryType
+        branchId
       }
       payment {
         method

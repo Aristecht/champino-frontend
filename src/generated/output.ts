@@ -1503,7 +1503,7 @@ export type GetMyOrdersQueryVariables = Exact<{
 }>;
 
 
-export type GetMyOrdersQuery = { __typename?: 'Query', getMyOrders: { __typename?: 'OrderListModel', total: number, page: number, limit: number, data: Array<{ __typename?: 'OrderModel', id: string, status: OrderStatus, totalAmount: number, discountAmount?: number | null, createdAt: string, note?: string | null, items: Array<{ __typename?: 'OrderItemModel', id: string, quantity: number, priceAtOrder: number, subtotal: number, variantName?: string | null, product?: { __typename?: 'OrderProductModel', id: string, name?: string | null, images: Array<string> } | null }>, shipping?: { __typename?: 'ShippingAddressModel', fullName: string, phone: string, city?: string | null, street?: string | null, building?: string | null, apartment?: string | null, deliveryType: DeliveryType } | null, payment?: { __typename?: 'PaymentModel', method: PaymentMethod, status: PaymentsStatus, amount: number, currency: string, paidAt?: string | null } | null }> } };
+export type GetMyOrdersQuery = { __typename?: 'Query', getMyOrders: { __typename?: 'OrderListModel', total: number, page: number, limit: number, data: Array<{ __typename?: 'OrderModel', id: string, status: OrderStatus, totalAmount: number, discountAmount?: number | null, createdAt: string, note?: string | null, items: Array<{ __typename?: 'OrderItemModel', id: string, quantity: number, priceAtOrder: number, subtotal: number, variantName?: string | null, product?: { __typename?: 'OrderProductModel', id: string, name?: string | null, images: Array<string> } | null }>, shipping?: { __typename?: 'ShippingAddressModel', fullName: string, phone: string, city?: string | null, street?: string | null, building?: string | null, apartment?: string | null, deliveryType: DeliveryType, branchId?: string | null } | null, payment?: { __typename?: 'PaymentModel', method: PaymentMethod, status: PaymentsStatus, amount: number, currency: string, paidAt?: string | null } | null }> } };
 
 export type GetProductReviewsQueryVariables = Exact<{
   productId: Scalars['String']['input'];
@@ -3187,6 +3187,7 @@ export const GetMyOrdersDocument = gql`
         building
         apartment
         deliveryType
+        branchId
       }
       payment {
         method

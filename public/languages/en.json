@@ -241,7 +241,8 @@
     "paymentStatusSucceeded": "Succeeded",
     "paymentStatusFailed": "Failed",
     "paymentStatusRefunded": "Refunded",
-    "paymentStatusExpired": "Expired"
+    "paymentStatusExpired": "Expired",
+    "pickupBranch": "Branch"
   },
   "admin": {
     "menu": "Admin",

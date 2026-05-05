@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "@apollo/client/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Package, ChevronDown, ChevronUp, AlertCircle } from "lucide-react";
@@ -17,6 +18,10 @@ import {
   PaymentMethod,
   PaymentsStatus,
 } from "@/generated/output";
+import {
+  GET_BRANCHES,
+  type BranchesQuery,
+} from "@/components/features/cart/checkoutApi";
 
 const DELIVERY_LABEL_KEY: Record<string, string> = {
   COURIER: "deliveryCourier",
@@ -71,6 +76,8 @@ export default function MyOrdersPage() {
     variables: { filter: { limit: 50, page: 1 } },
     fetchPolicy: "network-only",
   });
+  const { data: branchesData } = useQuery<BranchesQuery>(GET_BRANCHES);
+  const branches = branchesData?.getBranches ?? [];
 
   const [cancelOrder] = useCancelOrderMutation();
 
@@ -237,7 +244,7 @@ export default function MyOrdersPage() {
                                   src={imgSrc}
                                   alt={item.product?.name ?? ""}
                                   fill
-                                  className="object-cover"
+                                  className="object-contain"
                                   unoptimized
                                 />
                               )}
@@ -246,7 +253,7 @@ export default function MyOrdersPage() {
                               {productHref ? (
                                 <Link
                                   href={productHref}
-                                  className="text-foreground hover:text-primary truncate text-sm font-medium transition-colors"
+                                  className="text-foreground hover:text-primary block truncate text-sm font-medium transition-colors"
                                 >
                                   {item.product?.name ?? t("productFallback")}
                                 </Link>
@@ -300,6 +307,19 @@ export default function MyOrdersPage() {
                               .join(", ")}
                           </p>
                         )}
+                        {order.shipping.deliveryType === DeliveryType.Pickup &&
+                          order.shipping.branchId &&
+                          (() => {
+                            const branch = branches.find(
+                              (b) => b.id === order.shipping!.branchId
+                            );
+                            return branch ? (
+                              <p>
+                                {t("pickupBranch")}: {branch.name},{" "}
+                                {branch.city}, {branch.address}
+                              </p>
+                            ) : null;
+                          })()}
                       </div>
                     )}
 

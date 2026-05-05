@@ -241,7 +241,8 @@
     "paymentStatusSucceeded": "Успешно",
     "paymentStatusFailed": "Ошибка",
     "paymentStatusRefunded": "Возвращён",
-    "paymentStatusExpired": "Истёк"
+    "paymentStatusExpired": "Истёк",
+    "pickupBranch": "Филиал"
   },
   "admin": {
     "menu": "Админ",

@@ -221,11 +221,16 @@ export function SettingsPageClient() {
       try {
         await subscribe();
       } catch (error) {
-        toast.error(
-          error instanceof PushPermissionDeniedError
-            ? t("pushPermissionDenied")
-            : t("pushError")
-        );
+        if (error instanceof PushPermissionDeniedError) {
+          toast.error(t("pushPermissionDenied"));
+        } else if (
+          error instanceof Error &&
+          error.message.includes("VAPID key not configured")
+        ) {
+          toast.error("VAPID ключ не настроен в продакшене");
+        } else {
+          toast.error(t("pushError"));
+        }
         return;
       }
     } else {

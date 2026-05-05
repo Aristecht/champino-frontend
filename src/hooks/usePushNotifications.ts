@@ -34,6 +34,7 @@ export class PushPermissionDeniedError extends Error {
 
 export function usePushNotifications() {
   const [registerToken] = useMutation(REGISTER_DEVICE_TOKEN);
+  const swPath = "/firebase-messaging-sw.js";
 
   const subscribe = useCallback(async (): Promise<void> => {
     if (!("serviceWorker" in navigator) || !("Notification" in window)) {
@@ -49,10 +50,10 @@ export function usePushNotifications() {
     if (!vapidKey) throw new Error("VAPID key not configured");
 
     const messaging = getFirebaseMessaging();
-    const swReg = await navigator.serviceWorker.register(
-      "/api/firebase-messaging-sw.js",
-      { scope: "/", type: "classic" }
-    );
+    const swReg = await navigator.serviceWorker.register(swPath, {
+      scope: "/",
+      type: "classic",
+    });
     // Force browser to download the latest SW version (clears stale Firebase compat SW)
     await swReg.update();
     await navigator.serviceWorker.ready;
@@ -98,9 +99,7 @@ export function usePushNotifications() {
     }
 
     try {
-      const swReg = await navigator.serviceWorker.getRegistration(
-        "/api/firebase-messaging-sw.js"
-      );
+      const swReg = await navigator.serviceWorker.getRegistration(swPath);
       await swReg?.unregister();
     } catch (err) {
       console.warn("SW unregister failed (non-critical):", err);

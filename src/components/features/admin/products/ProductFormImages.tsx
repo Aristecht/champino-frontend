@@ -2,20 +2,57 @@
 
 import { useRef } from "react";
 import { ImagePlus, Trash2 } from "lucide-react";
+import {
+  DndContext,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  rectSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { type MediaItem } from "./productFormHelpers";
 
 interface ProductFormImagesProps {
   images: MediaItem[];
   onAddFiles: (files: FileList | null) => void;
   onRemove: (idx: number) => void;
+  onReorder: (next: MediaItem[]) => void;
 }
 
 export function ProductFormImages({
   images,
   onAddFiles,
   onRemove,
+  onReorder,
 }: ProductFormImagesProps) {
   const imgInputRef = useRef<HTMLInputElement>(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 6,
+      },
+    })
+  );
+
+  const itemIds = images.map(getImageId);
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = itemIds.indexOf(String(active.id));
+    const newIndex = itemIds.indexOf(String(over.id));
+    if (oldIndex < 0 || newIndex < 0) return;
+
+    onReorder(arrayMove(images, oldIndex, newIndex));
+  };
 
   return (
     <div className="bg-card border-border rounded-lg border p-5">
@@ -46,33 +83,25 @@ export function ProductFormImages({
       />
 
       {images.length > 0 ? (
-        <div className="grid grid-cols-5 gap-2">
-          {images.map((img, i) => (
-            <div
-              key={i}
-              className="bg-muted/40 group relative aspect-square overflow-hidden rounded-md"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={img.localUrl}
-                alt=""
-                className="h-full w-full object-contain"
-              />
-              <button
-                type="button"
-                onClick={() => onRemove(i)}
-                className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
-              >
-                <Trash2 className="h-4 w-4 text-white" />
-              </button>
-              {i === 0 && (
-                <span className="absolute bottom-1 left-1 rounded bg-black/60 px-1 py-0.5 text-[9px] text-white">
-                  Главное
-                </span>
-              )}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={itemIds} strategy={rectSortingStrategy}>
+            <div className="grid grid-cols-5 gap-2">
+              {images.map((img, i) => (
+                <SortableImageItem
+                  key={getImageId(img)}
+                  id={getImageId(img)}
+                  img={img}
+                  index={i}
+                  onRemove={onRemove}
+                />
+              ))}
             </div>
-          ))}
-        </div>
+          </SortableContext>
+        </DndContext>
       ) : (
         <button
           type="button"
@@ -85,4 +114,73 @@ export function ProductFormImages({
       )}
     </div>
   );
+}
+
+function SortableImageItem({
+  id,
+  img,
+  index,
+  onRemove,
+}: {
+  id: string;
+  img: MediaItem;
+  index: number;
+  onRemove: (idx: number) => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="bg-muted/40 group relative aspect-square overflow-hidden rounded-md"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={img.localUrl} alt="" className="h-full w-full object-contain" />
+
+      <button
+        type="button"
+        onClick={() => onRemove(index)}
+        className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
+      >
+        <Trash2 className="h-4 w-4 text-white" />
+      </button>
+
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        className="absolute top-1 right-1 cursor-grab rounded bg-black/55 px-1.5 py-0.5 text-[10px] text-white active:cursor-grabbing"
+        aria-label="Перетащить изображение"
+      >
+        drag
+      </button>
+
+      {index === 0 && (
+        <span className="absolute bottom-1 left-1 rounded bg-black/60 px-1 py-0.5 text-[9px] text-white">
+          Главное
+        </span>
+      )}
+
+      {isDragging && (
+        <div className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-primary" />
+      )}
+    </div>
+  );
+}
+
+function getImageId(img: MediaItem): string {
+  return img.mediaId ?? img.remoteUrl ?? img.localUrl;
 }

@@ -108,6 +108,10 @@ export function ProductForm({
     });
   }
 
+  function reorderImages(next: MediaItem[]) {
+    setImages(next);
+  }
+
   function addVideo(files: FileList | null) {
     if (!files || !files[0]) return;
     if (video?.file) URL.revokeObjectURL(video.localUrl);
@@ -143,26 +147,26 @@ export function ProductForm({
       return;
     }
 
-    const existingUrls = images
-      .filter((img) => !img.file)
-      .map((img) => img.remoteUrl!);
     const newImageFiles = images
       .filter((img) => img.file)
       .map((img) => img.file!);
 
-    let uploadedUrls: string[] = [];
+    let currentImages = images;
     if (newImageFiles.length > 0) {
       try {
-        uploadedUrls = await uploadImages(productId, newImageFiles);
-        setImages((prev) => {
-          const remote = prev.filter((img) => !img.file);
-          const fresh = uploadedUrls.map((url) => ({
-            localUrl: storageUrl(url) ?? url,
+        const uploadedUrls = await uploadImages(productId, newImageFiles);
+
+        let uploadedIndex = 0;
+        currentImages = images.map((img) => {
+          if (!img.file) return img;
+          const uploadedUrl = uploadedUrls[uploadedIndex++];
+          return {
+            localUrl: storageUrl(uploadedUrl) ?? uploadedUrl,
             file: null,
-            remoteUrl: url,
-          }));
-          return [...remote, ...fresh];
+            remoteUrl: uploadedUrl,
+          };
         });
+        setImages(currentImages);
       } catch {
         toast.error("Ошибка при загрузке изображений");
         setSubmitting(false);
@@ -203,7 +207,9 @@ export function ProductForm({
       description: description.trim() || undefined,
       discountPercent: discountPercent ? Number(discountPercent) : undefined,
       isPublished,
-      images: [...existingUrls, ...uploadedUrls],
+      images: currentImages
+        .map((img) => img.remoteUrl)
+        .filter((url): url is string => Boolean(url)),
     });
     setSubmitting(false);
   }
@@ -233,6 +239,7 @@ export function ProductForm({
         images={images}
         onAddFiles={addImages}
         onRemove={removeImage}
+        onReorder={reorderImages}
       />
 
       <ProductFormVideo

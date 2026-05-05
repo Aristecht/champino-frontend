@@ -2,9 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { cn } from "@/utils/tw-merge";
-import { INPUT_CLS, type CatForm } from "./categoryTypes";
+import { INPUT_CLS, SELECT_CLS, type CatForm } from "./categoryTypes";
 import { ImagePicker } from "./ImagePicker";
-import { CustomSelect } from "../products/CategoryCascadeSelect";
 
 interface CategoryFormFieldsProps {
   form: CatForm;
@@ -30,13 +29,6 @@ export function CategoryFormFields({
   onImageChange,
 }: CategoryFormFieldsProps) {
   const t = useTranslations("admin");
-
-  const parentOptions = rootCats
-    .filter((c) => c.id !== excludeId)
-    .map((c) => ({
-      value: c.id,
-      label: c.name,
-    }));
 
   return (
     <div className="space-y-4">
@@ -107,16 +99,21 @@ export function CategoryFormFields({
               (необязательно)
             </span>
           </label>
-          <CustomSelect
+
+          <select
             value={form.parentId}
-            onChange={(value) =>
-              onChange("parentId")({
-                target: { value },
-              } as React.ChangeEvent<HTMLSelectElement>)
-            }
-            options={parentOptions}
-            placeholder="— Корневая категория —"
-          />
+            onChange={onChange("parentId")}
+            className={SELECT_CLS}
+          >
+            <option value="">— Корневая категория —</option>
+            {rootCats
+              .filter((c) => c.id !== excludeId)
+              .map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+          </select>
         </div>
       )}
     </div>

@@ -40,7 +40,7 @@ export function HomeProductCard({ product }: HomeProductCardProps) {
             alt={product.name ?? t("productFallback")}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-contain p-2"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-4xl opacity-25">
@@ -83,7 +83,9 @@ export function HomeProductCard({ product }: HomeProductCardProps) {
               e.stopPropagation();
               if (outOfStock) return;
               if (!isAuthenticated) {
-                toast.info("Войдите в аккаунт, чтобы добавлять товары в корзину");
+                toast.info(
+                  "Войдите в аккаунт, чтобы добавлять товары в корзину"
+                );
                 router.push("/account/login");
                 return;
               }

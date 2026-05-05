@@ -91,19 +91,17 @@ export function ProductMediaGallery({
                 📦
               </div>
             )
+          ) : currentMediaUrl ? (
+            <Image
+              src={currentMediaUrl}
+              alt={productName}
+              fill
+              className="object-contain p-2"
+            />
           ) : (
-            currentMediaUrl ? (
-              <Image
-                src={currentMediaUrl}
-                alt={productName}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-5xl opacity-20">
-                📦
-              </div>
-            )
+            <div className="flex h-full w-full items-center justify-center text-5xl opacity-20">
+              📦
+            </div>
           )
         ) : (
           <div className="flex h-full items-center justify-center text-5xl opacity-20">
@@ -184,7 +182,7 @@ export function ProductMediaGallery({
                       src={thumbUrl}
                       alt=""
                       fill
-                      className="object-cover"
+                      className="object-contain p-1"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center text-2xl opacity-20">

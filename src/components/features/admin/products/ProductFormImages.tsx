@@ -175,7 +175,7 @@ function SortableImageItem({
       )}
 
       {isDragging && (
-        <div className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-primary" />
+        <div className="ring-primary pointer-events-none absolute inset-0 rounded-md ring-2" />
       )}
     </div>
   );

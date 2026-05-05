@@ -415,7 +415,7 @@ export function NotificationsPanel() {
     >
       <Bell className="h-4 w-4" />
       {unread > 0 && (
-        <span className="bg-primary text-primary-foreground absolute -top-2 left-1/2 flex h-4 min-w-4 -translate-x-1/2 items-center justify-center rounded-full px-1 text-[9px] font-bold shadow-sm">
+        <span className="bg-primary text-primary-foreground absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-bold shadow-sm">
           {unread > 9 ? "9+" : unread}
         </span>
       )}

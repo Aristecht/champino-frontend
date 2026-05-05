@@ -244,6 +244,21 @@
     "paymentStatusExpired": "Expired",
     "pickupBranch": "Branch"
   },
+  "orderStatuses": {
+    "READY_FOR_PICKUP": "Ready for pickup",
+    "ASSEMBLING": "Assembling",
+    "PROCESSING": "Processing",
+    "CONFIRMED": "Confirmed",
+    "PENDING": "Pending",
+    "SHIPPED": "Shipped",
+    "DELIVERED": "Delivered",
+    "COMPLETED": "Completed",
+    "CANCELLED": "Cancelled",
+    "REFUNDED": "Refunded",
+    "PAID": "Paid",
+    "FAILED": "Failed",
+    "EXPIRED": "Expired"
+  },
   "admin": {
     "menu": "Admin",
     "overview": "Overview",

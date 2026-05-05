@@ -244,6 +244,21 @@
     "paymentStatusExpired": "Истёк",
     "pickupBranch": "Филиал"
   },
+  "orderStatuses": {
+    "READY_FOR_PICKUP": "Готов к выдаче",
+    "ASSEMBLING": "Собирается",
+    "PROCESSING": "Обрабатывается",
+    "CONFIRMED": "Подтверждён",
+    "PENDING": "Ожидает",
+    "SHIPPED": "Отправлен",
+    "DELIVERED": "Доставлен",
+    "COMPLETED": "Завершён",
+    "CANCELLED": "Отменён",
+    "REFUNDED": "Возвращён",
+    "PAID": "Оплачен",
+    "FAILED": "Ошибка",
+    "EXPIRED": "Истёк"
+  },
   "admin": {
     "menu": "Админ",
     "overview": "Обзор",

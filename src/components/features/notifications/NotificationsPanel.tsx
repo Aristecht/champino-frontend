@@ -134,15 +134,17 @@ const TYPE_TITLE_RU: Record<string, string> = {
 const STATUS_RU: Record<string, string> = {
   READY_FOR_PICKUP: "Готов к выдаче",
   ASSEMBLING: "Собирается",
+  PROCESSING: "Обрабатывается",
   CONFIRMED: "Подтверждён",
+  PENDING: "Ожидает",
   SHIPPED: "Отправлен",
   DELIVERED: "Доставлен",
   COMPLETED: "Завершён",
   CANCELLED: "Отменён",
   REFUNDED: "Возвращён",
-  PROCESSING: "В обработке",
-  PENDING: "Ожидает обработки",
   PAID: "Оплачен",
+  FAILED: "Ошибка",
+  EXPIRED: "Истёк",
 };
 
 function formatNotificationTitle(type: string) {

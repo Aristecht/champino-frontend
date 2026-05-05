@@ -29,6 +29,8 @@ import {
   InputOTPSlot,
 } from "@/components/common/ui/InputOTP";
 import Link from "next/link";
+import { authStore } from "@/store/auth/auth.store";
+import { cartStore } from "@/store/cart/cart.store";
 
 export function LoginAccountForm() {
   const t = useTranslations("auth.loginAccount");
@@ -49,13 +51,31 @@ export function LoginAccountForm() {
 
   const [login, { loading: isLoadingLogin }] = useLoginUserMutation({
     onCompleted(data) {
+      const user = data.loginUser.user;
+      const twoFactorPending = !!(
+        user?.isTotpEnabled && data.loginUser.message
+      );
+
+      if (user && !twoFactorPending) {
+        authStore.getState().setIsAuthenticated(true);
+        authStore.getState().setUser({
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          role: user.role,
+        });
+        cartStore.getState().restoreForUser(user.id);
+      }
+
       if (data.loginUser.user?.isTotpEnabled && data.loginUser.message) {
         setIsShowTwoFactor(true);
       } else if (data.loginUser.message) {
         router.push("/");
+        router.refresh();
         toast.info(data.loginUser.message);
       } else {
         router.push("/");
+        router.refresh();
         toast.success(t("successToast"));
       }
     },
@@ -66,7 +86,6 @@ export function LoginAccountForm() {
   });
 
   function onSubmit(data: TypeLoginAccountSchema) {
-    console.log("Form submitted:", data);
     login({ variables: { data } });
   }
 

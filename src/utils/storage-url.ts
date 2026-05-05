@@ -3,7 +3,9 @@ export function storageUrl(path: string | null | undefined): string | null {
   // Blob URLs (new file preview) — always use as-is
   if (path.startsWith("blob:")) return path;
 
-  const base = process.env.NEXT_PUBLIC_S3_URL;
+  const base =
+    process.env.NEXT_PUBLIC_S3_URL ||
+    "https://4fac1e4f-9e0e-445a-bfee-07a4051eac67.selstorage.ru";
 
   if (path.startsWith("https://") || path.startsWith("http://")) {
     // Already the CDN URL — return as-is
@@ -26,6 +28,10 @@ export function storageUrl(path: string | null | undefined): string | null {
   }
 
   // Relative path — prepend CDN base
+  if (path.startsWith("/") && typeof window !== "undefined") {
+    return `${window.location.origin}${path}`;
+  }
+
   if (!base) return null;
   return `${base}/${path.replace(/^\//, "")}`;
 }

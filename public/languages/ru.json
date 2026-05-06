@@ -406,7 +406,7 @@
       "accountCreatedDesc": "Для полноценной работы рекомендуем подтвердить почту. Письмо уже у вас во входящих.",
       "goToLogin": "Перейти ко входу",
       "username": "Имя пользователя",
-      "usernamePlaceholder": "ivan_petrov",
+      "usernamePlaceholder": "example",
       "email": "Email",
       "emailPlaceholder": "example@mail.com",
       "password": "Пароль",
@@ -431,7 +431,7 @@
       "successToast": "Добро пожаловать!",
       "errorToast": "Неверный логин или пароль.",
       "loginLabel": "Логин или email",
-      "loginPlaceholder": "ivan_petrov или example@mail.com",
+      "loginPlaceholder": "example@mail.com",
       "loginDescription": "Введите имя пользователя или email",
       "password": "Пароль",
       "passwordPlaceholder": "Введите пароль",
@@ -569,8 +569,8 @@
     },
     "contacts": {
       "title": "Контакты",
-      "phone": "+7 (777) 123-45-67",
-      "email": "workaccount@champino.kz",
+      "phone": "+7 (771) 344-44-81",
+      "email": "812001@mail.ru",
       "moreInfo": "Подробнее вы можете посмотреть на страничке \"Доставка и оплата\"",
       "workingHours": "Пн - Вс, 10:00 - 21:00"
     },

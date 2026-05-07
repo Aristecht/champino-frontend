@@ -21,7 +21,7 @@ const TIERS = [
   { purchases: 15, discount: 5 },
 ] as const;
 
-const LOYALTY_QR_VALUE = "https://champino.kz/loyalty/card";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://champino.org";
 
 function getNextTier(n: number) {
   return TIERS.find((t) => n < t.purchases) ?? null;
@@ -41,7 +41,9 @@ export function HomeHero() {
   const progress = nextTier
     ? Math.round((totalOrders / nextTier.purchases) * 100)
     : 100;
-  const qrValue = data?.myLoyaltyCard.qrUrl ?? LOYALTY_QR_VALUE;
+
+  const fallbackQrValue = `${SITE_URL}/loyalty`;
+  const qrValue = data?.myLoyaltyCard.qrUrl ?? fallbackQrValue;
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=16&data=${encodeURIComponent(qrValue)}`;
 
   return (

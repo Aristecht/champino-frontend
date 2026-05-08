@@ -104,7 +104,13 @@ export function HomeProductsExplorer() {
     })
       .then(({ data: more }) => {
         if (!more?.findAllProducts) return;
-        setProducts((prev) => [...prev, ...more.findAllProducts.data]);
+        setProducts((prev) => {
+          const existingIds = new Set(prev.map((p) => p.id));
+          const newItems = more.findAllProducts.data.filter(
+            (p) => !existingIds.has(p.id)
+          );
+          return [...prev, ...newItems];
+        });
         const meta = more.findAllProducts.meta;
         setPage(meta.page);
         setHasMore(meta.page < meta.totalPages);

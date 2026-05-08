@@ -18,7 +18,8 @@ self.addEventListener("push", function (event) {
 
   const title = notification.title || data.title || "Notification";
   const body = notification.body || data.body || "";
-  const url = data.url || "/";
+  const rawUrl = data.url || "/";
+  const url = rawUrl.startsWith("http") ? new URL(rawUrl).pathname : rawUrl;
 
   event.waitUntil(
     self.registration.showNotification(title, {
@@ -32,7 +33,11 @@ self.addEventListener("push", function (event) {
 
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
-  const url = event.notification.data?.url || "/";
+  const rawClickUrl = event.notification.data?.url || "/";
+  const pathname = rawClickUrl.startsWith("http")
+    ? new URL(rawClickUrl).pathname
+    : rawClickUrl;
+  const fullUrl = self.location.origin + pathname;
 
   event.waitUntil(
     clients
@@ -40,9 +45,10 @@ self.addEventListener("notificationclick", function (event) {
       .then(function (windowClients) {
         for (let i = 0; i < windowClients.length; i++) {
           const client = windowClients[i];
-          if (client.url === url && "focus" in client) return client.focus();
+          if (client.url === fullUrl && "focus" in client)
+            return client.focus();
         }
-        if (clients.openWindow) return clients.openWindow(url);
+        if (clients.openWindow) return clients.openWindow(fullUrl);
       })
   );
 });

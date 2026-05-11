@@ -170,8 +170,8 @@ export default function AdminNewsPage() {
   }
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 p-4 sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-foreground text-xl font-bold">{t("news")}</h1>
         <button
           onClick={() => setFormOpen(true)}

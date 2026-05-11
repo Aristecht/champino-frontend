@@ -108,7 +108,7 @@ export default function AdminReturnsPage() {
   }
 
   return (
-    <div className="space-y-5 p-6">
+    <div className="space-y-5 p-4 sm:p-6">
       <div>
         <h1 className="text-foreground text-xl font-semibold">
           {t("returns")}
@@ -119,26 +119,157 @@ export default function AdminReturnsPage() {
       </div>
 
       <div className="bg-card border-border rounded-lg border">
-        <div className="flex flex-wrap items-center gap-2 border-b px-4 py-3">
-          <div className="flex gap-1">
-            {STATUS_TABS.map((tab) => (
-              <button
-                key={tab.value}
-                onClick={() => handleTabChange(tab.value)}
-                className={cn(
-                  "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
-                  activeStatus === tab.value
-                    ? "bg-foreground text-background"
-                    : "text-muted-foreground hover:bg-accent"
-                )}
-              >
-                {tab.label}
-              </button>
-            ))}
+        <div className="border-b px-4 py-3">
+          <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex min-w-max gap-1">
+              {STATUS_TABS.map((tab) => (
+                <button
+                  key={tab.value}
+                  onClick={() => handleTabChange(tab.value)}
+                  className={cn(
+                    "rounded-md px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors",
+                    activeStatus === tab.value
+                      ? "bg-foreground text-background"
+                      : "text-muted-foreground hover:bg-accent"
+                  )}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Mobile cards */}
+        <div className="sm:hidden">
+          {isFirstLoad ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex items-start gap-3 border-b px-4 py-4 last:border-0"
+              >
+                <div className="min-w-0 flex-1 space-y-2">
+                  <div className="bg-muted h-3 w-24 animate-pulse rounded" />
+                  <div className="bg-muted h-4 w-36 animate-pulse rounded" />
+                  <div className="bg-muted h-3 w-28 animate-pulse rounded" />
+                </div>
+                <div className="bg-muted h-5 w-16 animate-pulse rounded-full" />
+              </div>
+            ))
+          ) : orders.length === 0 ? (
+            <div className="text-muted-foreground px-5 py-12 text-center text-sm">
+              Нет заказов
+            </div>
+          ) : (
+            <div
+              className={cn(
+                "transition-opacity duration-200",
+                isRefreshing && "opacity-50"
+              )}
+            >
+              {orders.map((o) => (
+                <div
+                  key={o.id}
+                  onClick={() => setSelectedOrderId(o.id)}
+                  className="hover:bg-muted/30 flex cursor-pointer items-start gap-3 border-b px-4 py-3.5 transition-colors last:border-0"
+                >
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className="text-foreground font-mono text-xs">
+                        {o.id.slice(0, 8)}…
+                      </span>
+                      <span
+                        className={cn(
+                          "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium",
+                          ORDER_STATUS_CLASS[o.status] ??
+                            "bg-muted text-muted-foreground"
+                        )}
+                      >
+                        {getOrderStatusLabel(
+                          o.status,
+                          o.shipping?.deliveryType ?? null
+                        )}
+                      </span>
+                    </div>
+                    <p className="text-foreground text-sm">
+                      {o.shipping?.fullName ?? "—"}
+                    </p>
+                    {o.shipping?.phone && (
+                      <p className="text-muted-foreground text-xs">
+                        {o.shipping.phone}
+                      </p>
+                    )}
+                    <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                      <span>{o.items.length} тов.</span>
+                      <span>·</span>
+                      <span>{fmtDate(o.createdAt)}</span>
+                    </div>
+                  </div>
+                  <div className="flex shrink-0 flex-col items-end gap-2">
+                    <span className="text-foreground font-medium tabular-nums">
+                      {fmtKzt(o.totalAmount)}
+                    </span>
+                    {(o.discountAmount ?? 0) > 0 && (
+                      <span className="text-muted-foreground text-xs line-through">
+                        {fmtKzt(
+                          getOriginalAmount(o.totalAmount, o.discountAmount)
+                        )}
+                      </span>
+                    )}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          onClick={(e) => e.stopPropagation()}
+                          disabled={refunding || updatingStatus}
+                          className="hover:bg-accent flex h-7 items-center gap-1 rounded-md px-2 transition-colors disabled:opacity-50"
+                        >
+                          <span className="text-muted-foreground text-xs">
+                            Действие
+                          </span>
+                          <ChevronDown className="text-muted-foreground h-3 w-3" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        className="w-48"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {o.status !== OrderStatus.Refunded && (
+                          <DropdownMenuItem
+                            disabled={refunding}
+                            onClick={() =>
+                              refundOrder({ variables: { orderId: o.id } })
+                            }
+                          >
+                            Оформить возврат
+                          </DropdownMenuItem>
+                        )}
+                        {o.status !== OrderStatus.Cancelled && (
+                          <DropdownMenuItem
+                            disabled={updatingStatus}
+                            onClick={() =>
+                              updateStatus({
+                                variables: {
+                                  orderId: o.id,
+                                  data: { status: OrderStatus.Cancelled },
+                                },
+                              })
+                            }
+                          >
+                            Отменить заказ
+                          </DropdownMenuItem>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Desktop table */}
+        <div className="hidden overflow-x-auto sm:block">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b">

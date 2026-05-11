@@ -105,8 +105,8 @@ export default function AdminProductsPage() {
   const totalPages = displayData?.findAllProductsAdmin?.meta?.totalPages ?? 0;
 
   return (
-    <div className="space-y-5 p-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-5 p-4 sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-foreground text-xl font-semibold">
             {t("products")}
@@ -128,18 +128,136 @@ export default function AdminProductsPage() {
 
       <div className="bg-card border-border rounded-lg border">
         <div className="border-b px-4 py-3">
-          <div className="relative max-w-xs">
+          <div className="relative">
             <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("searchProducts")}
-              className="border-input bg-background text-foreground placeholder:text-muted-foreground focus:ring-primary/20 w-full rounded-md border py-1.5 pr-3 pl-9 text-sm outline-none focus:ring-2"
+              className="border-input bg-background text-foreground placeholder:text-muted-foreground focus:ring-primary/20 w-full rounded-md border py-1.5 pr-3 pl-9 text-sm outline-none focus:ring-2 sm:max-w-xs"
             />
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Mobile cards */}
+        <div className="sm:hidden">
+          {!displayData ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex items-start gap-3 border-b px-4 py-4 last:border-0"
+              >
+                <div className="min-w-0 flex-1 space-y-2">
+                  <div className="bg-muted h-4 w-40 animate-pulse rounded" />
+                  <div className="bg-muted h-3 w-28 animate-pulse rounded" />
+                  <div className="bg-muted h-3 w-20 animate-pulse rounded" />
+                </div>
+                <div className="bg-muted h-6 w-14 animate-pulse rounded-full" />
+              </div>
+            ))
+          ) : products.length === 0 ? (
+            <div className="text-muted-foreground px-5 py-12 text-center text-sm">
+              {t("noProducts")}
+            </div>
+          ) : (
+            products.map((p) => {
+              const status = p.isPublished
+                ? "published"
+                : p.isDraft
+                  ? "draft"
+                  : "inactive";
+              return (
+                <div
+                  key={p.id}
+                  className="flex items-start gap-3 border-b px-4 py-3.5 last:border-0"
+                >
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <p className="text-foreground leading-snug font-medium">
+                      {p.name ?? "—"}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      {p.category?.name ?? "—"}
+                    </p>
+                    <div className="flex flex-wrap items-baseline gap-4">
+                      <span className="text-foreground text-sm font-medium">
+                        {fmtPrice(p.discountedPrice ?? p.price)}
+                      </span>
+                      {p.discountedPrice != null &&
+                        p.discountedPrice !== p.price && (
+                          <span className="text-muted-foreground text-xs line-through">
+                            {fmtPrice(p.price)}
+                          </span>
+                        )}
+                      <span
+                        className={cn(
+                          "text-xs font-medium tabular-nums",
+                          (p.stock ?? 0) === 0
+                            ? "text-red-500"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        {t("stock")}: {p.stock}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex shrink-0 flex-col items-end gap-2">
+                    <span
+                      className={cn(
+                        "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium",
+                        status === "published"
+                          ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400"
+                          : status === "draft"
+                            ? "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400"
+                            : "bg-muted text-muted-foreground"
+                      )}
+                    >
+                      {status === "published"
+                        ? t("published")
+                        : status === "draft"
+                          ? t("draft")
+                          : t("inactive")}
+                    </span>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="hover:bg-accent flex h-7 w-7 items-center justify-center rounded-md transition-colors">
+                          <MoreHorizontal className="text-muted-foreground h-4 w-4" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-44">
+                        <DropdownMenuItem asChild>
+                          <Link href={`/admin/products/${p.id}`}>
+                            {t("edit")}
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() =>
+                            togglePublish({ variables: { id: p.id } })
+                          }
+                        >
+                          {p.isPublished
+                            ? t("unpublishAction")
+                            : t("publishAction")}
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="text-red-600 focus:text-red-600"
+                          onClick={() =>
+                            setDeleteTarget({ id: p.id, name: p.name ?? p.id })
+                          }
+                        >
+                          {t("delete")}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* Desktop table */}
+        <div className="hidden overflow-x-auto sm:block">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b">

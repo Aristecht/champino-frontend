@@ -13,6 +13,7 @@ import {
   ShoppingBag,
   Users,
   Newspaper,
+  RefreshCw,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
@@ -59,6 +60,16 @@ export function AdminSidebar() {
       items: [
         { label: t("analytics"), href: "/admin/analytics", icon: BarChart3 },
         { label: t("users"), href: "/admin/users", icon: Users },
+      ],
+    },
+    {
+      label: "Интеграции",
+      items: [
+        {
+          label: "Синхронизация ROSTA",
+          href: "/admin/rosta-sync",
+          icon: RefreshCw,
+        },
       ],
     },
   ];

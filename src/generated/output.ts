@@ -309,6 +309,7 @@ export type Mutation = {
   adminDeleteBranch: Scalars['Boolean']['output'];
   adminDeletePostComment: Scalars['Boolean']['output'];
   adminRefundOrder: Scalars['Boolean']['output'];
+  adminSyncRostaProducts: Scalars['Boolean']['output'];
   adminUpdateBranch: BranchModel;
   adminUpdateOrderStatus: OrderModel;
   assignRole: UserModel;

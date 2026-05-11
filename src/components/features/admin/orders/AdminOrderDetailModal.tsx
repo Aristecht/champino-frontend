@@ -160,15 +160,15 @@ export function AdminOrderDetailModal({
 
   return (
     <Dialog open={!!orderId} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+      <DialogContent className="max-h-dvh w-[calc(100vw-1rem)] max-w-2xl overflow-y-auto rounded-xl p-4 sm:max-h-[90vh] sm:w-full sm:p-6">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="pr-8 text-base sm:text-lg">
             {loading || !order ? (
               "Загрузка заказа…"
             ) : (
               <span>
                 Заказ{" "}
-                <span className="font-mono text-sm">
+                <span className="font-mono text-xs sm:text-sm">
                   #{order.id.slice(0, 8).toUpperCase()}
                 </span>
               </span>
@@ -192,7 +192,7 @@ export function AdminOrderDetailModal({
         )}
 
         {!loading && order && (
-          <div className="space-y-5 pt-1">
+          <div className="space-y-4 pt-1 sm:space-y-5">
             {/* Status + actions */}
             <div className="flex flex-wrap items-center gap-3">
               <span
@@ -235,9 +235,9 @@ export function AdminOrderDetailModal({
                   return (
                     <div
                       key={item.id}
-                      className="bg-muted/30 flex items-center gap-3 rounded-lg p-2"
+                      className="bg-muted/30 flex items-start gap-3 rounded-lg p-2"
                     >
-                      <div className="bg-muted relative h-12 w-12 shrink-0 overflow-hidden rounded-md">
+                      <div className="bg-muted relative h-12 w-12 shrink-0 overflow-hidden rounded-md sm:h-14 sm:w-14">
                         {imgSrc && (
                           <Image
                             src={imgSrc}
@@ -249,7 +249,7 @@ export function AdminOrderDetailModal({
                         )}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-foreground truncate text-sm font-medium">
+                        <p className="text-foreground truncate text-sm leading-snug font-medium">
                           {item.product?.name ?? "Товар"}
                         </p>
                         {item.variantName && (
@@ -261,7 +261,7 @@ export function AdminOrderDetailModal({
                           {item.quantity} шт. × {fmtMoney(item.priceAtOrder)}
                         </p>
                       </div>
-                      <p className="text-foreground shrink-0 text-sm font-semibold">
+                      <p className="text-foreground shrink-0 text-sm font-semibold tabular-nums">
                         {fmtMoney(item.subtotal)}
                       </p>
                     </div>
@@ -384,7 +384,7 @@ export function AdminOrderDetailModal({
                         key={s}
                         onClick={() => handleStatusChange(s)}
                         disabled={updatingStatus}
-                        className="hover:bg-accent rounded-md border px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-50"
+                        className="hover:bg-accent rounded-md border px-3 py-2 text-xs font-medium transition-colors disabled:opacity-50"
                       >
                         {getOrderStatusLabel(
                           s,

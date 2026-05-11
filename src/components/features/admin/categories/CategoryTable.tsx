@@ -52,7 +52,141 @@ export function CategoryTable({
 
   return (
     <div className="bg-card border-border rounded-lg border">
-      <div className="overflow-x-auto">
+      {/* Mobile cards */}
+      <div className="sm:hidden">
+        {loading ? (
+          Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 border-b px-4 py-3.5 last:border-0"
+            >
+              <div className="bg-muted h-7 w-7 animate-pulse rounded-md" />
+              <div className="min-w-0 flex-1 space-y-2">
+                <div className="bg-muted h-4 w-32 animate-pulse rounded" />
+                <div className="bg-muted h-3 w-24 animate-pulse rounded" />
+              </div>
+            </div>
+          ))
+        ) : rootCats.length === 0 ? (
+          <div className="text-muted-foreground flex flex-col items-center px-5 py-12 text-center text-sm">
+            <Tag className="mb-2 h-8 w-8 opacity-30" />
+            {t("noCategoriesYet")}
+          </div>
+        ) : (
+          rootCats.map((cat) => (
+            <div key={cat.id}>
+              <div className="flex items-start gap-3 border-b px-4 py-3.5 last:border-0">
+                {cat.imageUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={storageUrl(cat.imageUrl) ?? cat.imageUrl}
+                    alt={cat.name}
+                    className="mt-0.5 h-8 w-8 shrink-0 rounded-md object-cover"
+                  />
+                ) : (
+                  <div className="bg-muted mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md">
+                    <Tag className="text-muted-foreground h-4 w-4" />
+                  </div>
+                )}
+                <div className="min-w-0 flex-1 space-y-0.5">
+                  <p className="text-foreground font-medium">{cat.name}</p>
+                  <p className="text-muted-foreground font-mono text-xs">
+                    {cat.slug ?? "—"}
+                  </p>
+                  {(cat.children?.length ?? 0) > 0 && (
+                    <button
+                      onClick={() => onToggleExpand(cat.id)}
+                      className="text-muted-foreground hover:text-foreground text-xs transition-colors"
+                    >
+                      {expanded.has(cat.id) ? "▾" : "▸"} {cat.children?.length}{" "}
+                      {t("subcategories").toLowerCase()}
+                    </button>
+                  )}
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="hover:bg-accent flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors">
+                      <MoreHorizontal className="text-muted-foreground h-4 w-4" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-40">
+                    <DropdownMenuItem
+                      onClick={() =>
+                        onEdit({
+                          id: cat.id,
+                          name: cat.name,
+                          slug: cat.slug,
+                          parentId: cat.parentId,
+                          imageUrl: cat.imageUrl,
+                          isRoot: true,
+                        })
+                      }
+                    >
+                      {t("edit")}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      className="text-red-600 focus:text-red-600"
+                      onClick={() => onDelete({ id: cat.id, name: cat.name })}
+                    >
+                      {t("delete")}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              {expanded.has(cat.id) &&
+                cat.children?.map((sub) => (
+                  <div
+                    key={sub.id}
+                    className="bg-muted/20 flex items-start gap-3 border-b px-4 py-3 pl-12 last:border-0"
+                  >
+                    <div className="min-w-0 flex-1 space-y-0.5">
+                      <p className="text-foreground text-sm">{sub.name}</p>
+                      <p className="text-muted-foreground font-mono text-xs">
+                        {sub.slug ?? "—"}
+                      </p>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="hover:bg-accent flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors">
+                          <MoreHorizontal className="text-muted-foreground h-4 w-4" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-40">
+                        <DropdownMenuItem
+                          onClick={() =>
+                            onEdit({
+                              id: sub.id,
+                              name: sub.name,
+                              slug: sub.slug,
+                              parentId: cat.id,
+                              imageUrl: null,
+                              isRoot: false,
+                            })
+                          }
+                        >
+                          {t("edit")}
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="text-red-600 focus:text-red-600"
+                          onClick={() =>
+                            onDelete({ id: sub.id, name: sub.name })
+                          }
+                        >
+                          {t("delete")}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                ))}
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop table */}
+      <div className="hidden overflow-x-auto sm:block">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b">

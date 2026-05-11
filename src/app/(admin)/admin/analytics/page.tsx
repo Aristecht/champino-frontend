@@ -156,29 +156,35 @@ export default function AdminAnalyticsPage() {
   ];
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-4 sm:p-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-foreground text-xl font-semibold">
           {t("analytics")}
         </h1>
-        <div className="flex items-center gap-2">
-          <Calendar className="text-muted-foreground h-4 w-4" />
-          <label className="text-muted-foreground text-xs">
-            {t("dateFrom")}
-          </label>
-          <input
-            type="date"
-            value={from}
-            onChange={(e) => setFrom(e.target.value)}
-            className="border-input bg-background text-foreground focus:ring-primary/20 rounded-md border px-2.5 py-1.5 text-xs outline-none focus:ring-2"
-          />
-          <label className="text-muted-foreground text-xs">{t("dateTo")}</label>
-          <input
-            type="date"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
-            className="border-input bg-background text-foreground focus:ring-primary/20 rounded-md border px-2.5 py-1.5 text-xs outline-none focus:ring-2"
-          />
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <div className="flex items-center gap-2">
+            <Calendar className="text-muted-foreground h-4 w-4" />
+            <label className="text-muted-foreground text-xs">
+              {t("dateFrom")}
+            </label>
+            <input
+              type="date"
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+              className="border-input bg-background text-foreground focus:ring-primary/20 rounded-md border px-2.5 py-1.5 text-xs outline-none focus:ring-2"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-muted-foreground text-xs">
+              {t("dateTo")}
+            </label>
+            <input
+              type="date"
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+              className="border-input bg-background text-foreground focus:ring-primary/20 rounded-md border px-2.5 py-1.5 text-xs outline-none focus:ring-2"
+            />
+          </div>
         </div>
       </div>
 
@@ -292,70 +298,76 @@ export default function AdminAnalyticsPage() {
             {t("topProducts")}
           </h2>
         </div>
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b">
-              {["#", t("name"), t("totalSold"), t("revenue"), "Сред. цена"].map(
-                (h) => (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b">
+                {[
+                  "#",
+                  t("name"),
+                  t("totalSold"),
+                  t("revenue"),
+                  "Сред. цена",
+                ].map((h) => (
                   <th
                     key={h}
                     className="text-muted-foreground px-4 py-2.5 text-left text-xs font-medium first:pl-5"
                   >
                     {h}
                   </th>
-                )
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              Array.from({ length: 5 }).map((_, i) => (
-                <tr key={i} className="border-b last:border-0">
-                  {[0, 1, 2, 3, 4].map((j) => (
-                    <td key={j} className="px-4 py-3.5 first:pl-5">
-                      <div className="bg-muted h-4 animate-pulse rounded" />
-                    </td>
-                  ))}
-                </tr>
-              ))
-            ) : topProducts.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={5}
-                  className="text-muted-foreground px-5 py-8 text-center text-sm"
-                >
-                  {t("noData")}
-                </td>
+                ))}
               </tr>
-            ) : (
-              topProducts.map((p, i) => (
-                <tr
-                  key={p.productId}
-                  className={cn(
-                    "hover:bg-muted/30 transition-colors",
-                    i < topProducts.length - 1 && "border-b"
-                  )}
-                >
-                  <td className="text-muted-foreground py-3.5 pr-4 pl-5 text-xs">
-                    {i + 1}
-                  </td>
-                  <td className="text-foreground px-4 py-3.5 font-medium">
-                    {p.productName}
-                  </td>
-                  <td className="px-4 py-3.5 tabular-nums">{p.totalSold}</td>
-                  <td className="px-4 py-3.5 font-medium tabular-nums">
-                    {fmtKzt(p.totalRevenue)}
-                  </td>
-                  <td className="text-muted-foreground px-4 py-3.5 text-xs tabular-nums">
-                    {p.totalSold > 0
-                      ? fmtKzt(p.totalRevenue / p.totalSold)
-                      : "—"}
+            </thead>
+            <tbody>
+              {loading ? (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={i} className="border-b last:border-0">
+                    {[0, 1, 2, 3, 4].map((j) => (
+                      <td key={j} className="px-4 py-3.5 first:pl-5">
+                        <div className="bg-muted h-4 animate-pulse rounded" />
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : topProducts.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="text-muted-foreground px-5 py-8 text-center text-sm"
+                  >
+                    {t("noData")}
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                topProducts.map((p, i) => (
+                  <tr
+                    key={p.productId}
+                    className={cn(
+                      "hover:bg-muted/30 transition-colors",
+                      i < topProducts.length - 1 && "border-b"
+                    )}
+                  >
+                    <td className="text-muted-foreground py-3.5 pr-4 pl-5 text-xs">
+                      {i + 1}
+                    </td>
+                    <td className="text-foreground px-4 py-3.5 font-medium">
+                      {p.productName}
+                    </td>
+                    <td className="px-4 py-3.5 tabular-nums">{p.totalSold}</td>
+                    <td className="px-4 py-3.5 font-medium tabular-nums">
+                      {fmtKzt(p.totalRevenue)}
+                    </td>
+                    <td className="text-muted-foreground px-4 py-3.5 text-xs tabular-nums">
+                      {p.totalSold > 0
+                        ? fmtKzt(p.totalRevenue / p.totalSold)
+                        : "—"}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

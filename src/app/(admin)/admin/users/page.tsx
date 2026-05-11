@@ -52,7 +52,7 @@ export default function AdminUsersPage() {
   const users = data?.findAllUser ?? [];
 
   return (
-    <div className="space-y-5 p-6">
+    <div className="space-y-5 p-4 sm:p-6">
       <div>
         <h1 className="text-foreground text-xl font-semibold">Пользователи</h1>
         {!loading && (
@@ -63,7 +63,115 @@ export default function AdminUsersPage() {
       </div>
 
       <div className="bg-card border-border rounded-lg border">
-        <div className="overflow-x-auto">
+        {/* Mobile cards */}
+        <div className="sm:hidden">
+          {loading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 border-b px-4 py-3.5 last:border-0"
+              >
+                <div className="bg-muted h-8 w-8 animate-pulse rounded-full" />
+                <div className="min-w-0 flex-1 space-y-2">
+                  <div className="bg-muted h-4 w-32 animate-pulse rounded" />
+                  <div className="bg-muted h-3 w-40 animate-pulse rounded" />
+                </div>
+                <div className="bg-muted h-5 w-16 animate-pulse rounded-full" />
+              </div>
+            ))
+          ) : users.length === 0 ? (
+            <div className="text-muted-foreground px-5 py-12 text-center text-sm">
+              Пользователей не найдено
+            </div>
+          ) : (
+            users.map((u, i) => (
+              <div
+                key={u.id}
+                className={cn(
+                  "hover:bg-muted/30 flex items-start gap-3 px-4 py-3.5 transition-colors",
+                  i < users.length - 1 && "border-b"
+                )}
+              >
+                {u.avatar ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={u.avatar}
+                    alt={u.username}
+                    className="h-9 w-9 shrink-0 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="bg-muted flex h-9 w-9 shrink-0 items-center justify-center rounded-full">
+                    <UserCircle className="text-muted-foreground h-5 w-5" />
+                  </div>
+                )}
+                <div className="min-w-0 flex-1 space-y-0.5">
+                  <p className="text-foreground font-medium">{u.username}</p>
+                  <p className="text-muted-foreground truncate text-xs">
+                    {u.email}
+                  </p>
+                  <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                    <span
+                      className={cn(
+                        "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium",
+                        ROLE_CLASS[u.role] ?? "bg-muted text-muted-foreground"
+                      )}
+                    >
+                      {ROLE_LABEL[u.role] ?? u.role}
+                    </span>
+                    {u.isDeactivated ? (
+                      <span className="inline-flex items-center rounded-full bg-red-50 px-2 py-0.5 text-[11px] font-medium text-red-700 dark:bg-red-950/40 dark:text-red-400">
+                        Заблокирован
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
+                        Активен
+                      </span>
+                    )}
+                    <span className="text-muted-foreground text-xs">
+                      {fmtDate(u.createdAt)}
+                    </span>
+                  </div>
+                </div>
+                {u.role !== "ADMIN" && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="hover:bg-accent flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors">
+                        <MoreHorizontal className="text-muted-foreground h-4 w-4" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-44">
+                      {u.role !== "MANAGER" && (
+                        <DropdownMenuItem
+                          onClick={() =>
+                            assignRole({
+                              variables: { userId: u.id, role: Role.Manager },
+                            })
+                          }
+                        >
+                          Назначить менеджером
+                        </DropdownMenuItem>
+                      )}
+                      {u.role !== "USER" && (
+                        <DropdownMenuItem
+                          onClick={() =>
+                            assignRole({
+                              variables: { userId: u.id, role: Role.User },
+                            })
+                          }
+                        >
+                          Снять роль
+                        </DropdownMenuItem>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop table */}
+        <div className="hidden overflow-x-auto sm:block">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b">

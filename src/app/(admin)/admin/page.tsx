@@ -80,7 +80,7 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-4 sm:p-6">
       <div>
         <h1 className="text-foreground text-xl font-semibold">
           {t("overview")}
@@ -91,7 +91,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* KPI */}
-      <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
@@ -120,7 +120,7 @@ export default function AdminDashboardPage() {
         })}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Recent orders */}
         <div className="bg-card border-border col-span-2 rounded-lg border">
           <div className="flex items-center justify-between border-b px-5 py-3.5">
@@ -150,73 +150,78 @@ export default function AdminDashboardPage() {
               {t("noRecentOrders")}
             </div>
           ) : (
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  {[
-                    "ID",
-                    t("customer"),
-                    t("total"),
-                    t("status"),
-                    t("date"),
-                  ].map((h) => (
-                    <th
-                      key={h}
-                      className="text-muted-foreground px-5 py-2.5 text-left text-xs font-medium"
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((o, i) => (
-                  <tr
-                    key={o.id}
-                    className={cn(
-                      "hover:bg-muted/30 transition-colors",
-                      i < orders.length - 1 && "border-b"
-                    )}
-                  >
-                    <td className="text-foreground px-5 py-3 font-mono text-xs">
-                      {o.id.slice(0, 8)}…
-                    </td>
-                    <td className="text-foreground px-5 py-3 text-sm">
-                      {o.shipping?.fullName ?? "—"}
-                    </td>
-                    <td className="text-foreground px-5 py-3 text-sm font-medium">
-                      <span>{fmtKzt(o.totalAmount)}</span>
-                      {(o.discountAmount ?? 0) > 0 && (
-                        <div className="mt-0.5 space-y-0.5 text-xs">
-                          <p className="text-muted-foreground line-through">
-                            {fmtKzt(
-                              getOriginalAmount(o.totalAmount, o.discountAmount)
-                            )}
-                          </p>
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-5 py-3">
-                      <span
-                        className={cn(
-                          "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium",
-                          ORDER_STATUS_CLASS[o.status] ??
-                            "bg-muted text-muted-foreground"
-                        )}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b">
+                    {[
+                      "ID",
+                      t("customer"),
+                      t("total"),
+                      t("status"),
+                      t("date"),
+                    ].map((h) => (
+                      <th
+                        key={h}
+                        className="text-muted-foreground px-5 py-2.5 text-left text-xs font-medium"
                       >
-                        {getOrderStatusLabel(
-                          o.status,
-                          o.shipping?.deliveryType ?? null
-                        )}
-                      </span>
-                    </td>
-                    <td className="text-muted-foreground px-5 py-3 text-xs">
-                      {fmtDate(o.createdAt)}
-                    </td>
+                        {h}
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {orders.map((o, i) => (
+                    <tr
+                      key={o.id}
+                      className={cn(
+                        "hover:bg-muted/30 transition-colors",
+                        i < orders.length - 1 && "border-b"
+                      )}
+                    >
+                      <td className="text-foreground px-5 py-3 font-mono text-xs">
+                        {o.id.slice(0, 8)}…
+                      </td>
+                      <td className="text-foreground px-5 py-3 text-sm">
+                        {o.shipping?.fullName ?? "—"}
+                      </td>
+                      <td className="text-foreground px-5 py-3 text-sm font-medium">
+                        <span>{fmtKzt(o.totalAmount)}</span>
+                        {(o.discountAmount ?? 0) > 0 && (
+                          <div className="mt-0.5 space-y-0.5 text-xs">
+                            <p className="text-muted-foreground line-through">
+                              {fmtKzt(
+                                getOriginalAmount(
+                                  o.totalAmount,
+                                  o.discountAmount
+                                )
+                              )}
+                            </p>
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-5 py-3">
+                        <span
+                          className={cn(
+                            "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium",
+                            ORDER_STATUS_CLASS[o.status] ??
+                              "bg-muted text-muted-foreground"
+                          )}
+                        >
+                          {getOrderStatusLabel(
+                            o.status,
+                            o.shipping?.deliveryType ?? null
+                          )}
+                        </span>
+                      </td>
+                      <td className="text-muted-foreground px-5 py-3 text-xs">
+                        {fmtDate(o.createdAt)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 

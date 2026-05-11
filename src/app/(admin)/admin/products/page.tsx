@@ -59,12 +59,6 @@ export default function AdminProductsPage() {
 
   const debouncedSearch = useDebounce(search, 400);
 
-  // reset to page 1 when search changes
-  const prevSearch = useDebounce(debouncedSearch, 0);
-  if (prevSearch !== debouncedSearch && currentPage !== 1) {
-    setCurrentPage(1);
-  }
-
   const LIMIT = 10;
   const { data, previousData, refetch } = useFindAllProductsAdminQuery({
     variables: {
@@ -132,7 +126,10 @@ export default function AdminProductsPage() {
             <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <input
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                if (currentPage !== 1) setCurrentPage(1);
+              }}
               placeholder={t("searchProducts")}
               className="border-input bg-background text-foreground placeholder:text-muted-foreground focus:ring-primary/20 w-full rounded-md border py-1.5 pr-3 pl-9 text-sm outline-none focus:ring-2 sm:max-w-xs"
             />

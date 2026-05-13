@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { HomePageClient } from "./HomePageClient";
 
 export const metadata: Metadata = {
-  title: "ЧАМПИНО — зоомагазин в Атырау",
+  title: {
+    absolute: "ЧАМПИНО — зоомагазин в Атырау",
+  },
   description:
     "Зоомагазин ЧАМПИНО в Атырау: корма, лакомства, наполнители и аксессуары для кошек, собак и других питомцев. Программа лояльности — 5 покупок даёт скидку 2%, 50 покупок — до 10%. Онлайн-заказ и быстрая доставка.",
   keywords: [

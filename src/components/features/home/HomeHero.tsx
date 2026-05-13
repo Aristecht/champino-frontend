@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingCart, Sparkles } from "lucide-react";
+import { PackageCheck, ShoppingCart } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export function HomeHero() {
@@ -10,12 +10,12 @@ export function HomeHero() {
 
   return (
     <section className="pt-6 sm:pt-8">
-      <div className="mx-auto max-w-6xl px-4 pb-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 pb-2 sm:px-6 sm:pb-8 lg:px-8">
         <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-stretch lg:gap-6">
           {/* Hero text */}
           <div className="bg-card border-border relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border px-5 py-7 sm:px-8 sm:py-9">
             <div className="bg-primary/10 text-primary z-10 mb-4 inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold">
-              <Sparkles className="h-3.5 w-3.5" />
+              <PackageCheck className="h-3.5 w-3.5" />
               {t("heroBadge")}
             </div>
             <h1 className="text-foreground z-10 max-w-2xl text-3xl font-bold tracking-tight sm:text-5xl">

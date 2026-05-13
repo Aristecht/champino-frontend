@@ -305,6 +305,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addPostComment: ArticleCommentModel;
   addToCart: CartModel;
+  adminCancelRostaSync: Scalars['Boolean']['output'];
   adminCreateBranch: BranchModel;
   adminDeleteBranch: Scalars['Boolean']['output'];
   adminDeletePostComment: Scalars['Boolean']['output'];
@@ -922,6 +923,7 @@ export type Query = {
   getPosts: PostListModel;
   getProductReviews: ReviewListModel;
   getProductVariants: Array<ProductVariantModel>;
+  getRostaSyncStatus: RostaSyncStatusModel;
   loyaltyCardByToken?: Maybe<LoyaltyCardWithUserModel>;
   myLoyaltyCard: LoyaltyCardModel;
 };
@@ -1068,6 +1070,19 @@ export enum Role {
   Manager = 'MANAGER',
   User = 'USER'
 }
+
+export type RostaSyncStatusModel = {
+  __typename?: 'RostaSyncStatusModel';
+  /** Ошибка, если она произошла */
+  error?: Maybe<Scalars['String']['output']>;
+  isRunning: Scalars['Boolean']['output'];
+  /** Прогресс синхронизации (0-100%) */
+  progress: Scalars['Int']['output'];
+  /** Время запуска синхронизации */
+  startedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** Текущий статус */
+  status: Scalars['String']['output'];
+};
 
 export type SessionMetadataModel = {
   __typename?: 'SessionMetadataModel';

@@ -30,9 +30,10 @@ export function CheckoutForm({ items }: CheckoutFormProps) {
     { label: t("deliveryPickup"), value: DeliveryType.Pickup },
   ];
 
-  const paymentOptions: SelectOption[] = [
-    { label: t("paymentCod"), value: PaymentMethod.CashOnDelivery },
-  ];
+  const paymentOptions: SelectOption[] =
+    checkout.deliveryType === DeliveryType.Courier
+      ? [{ label: t("paymentCod"), value: PaymentMethod.CashOnDelivery }]
+      : [];
 
   return (
     <Dialog open={checkout.open} onOpenChange={checkout.setOpen}>

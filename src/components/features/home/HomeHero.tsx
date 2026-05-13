@@ -21,8 +21,6 @@ const TIERS = [
   { purchases: 15, discount: 5 },
 ] as const;
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://champino.org";
-
 function getNextTier(n: number) {
   return TIERS.find((t) => n < t.purchases) ?? null;
 }
@@ -42,9 +40,9 @@ export function HomeHero() {
     ? Math.round((totalOrders / nextTier.purchases) * 100)
     : 100;
 
-  const fallbackQrValue = `${SITE_URL}/loyalty`;
-  const qrValue = data?.myLoyaltyCard.qrUrl ?? fallbackQrValue;
-  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=16&data=${encodeURIComponent(qrValue)}`;
+  // Use compact token payload for better scanner compatibility.
+  const qrValue = data?.myLoyaltyCard.qrToken ?? "loyalty";
+  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&margin=24&ecc=M&data=${encodeURIComponent(qrValue)}`;
 
   return (
     <section className="pt-6 sm:pt-8">
@@ -184,8 +182,8 @@ export function HomeHero() {
                 src={qrSrc}
                 alt={t("loyaltyQrAlt")}
                 className="mx-auto rounded-md object-contain"
-                width={320}
-                height={320}
+                width={256}
+                height={256}
                 loading="lazy"
                 unoptimized
               />

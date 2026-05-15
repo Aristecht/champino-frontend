@@ -1,7 +1,8 @@
 ﻿"use client";
 
 import { useState } from "react";
-import { Loader2, MoreHorizontal, Plus, Search } from "lucide-react";
+import { ImageOff, Loader2, MoreHorizontal, Plus, Search } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { cn } from "@/utils/tw-merge";
@@ -59,7 +60,25 @@ export default function AdminProductsPage() {
 
   const debouncedSearch = useDebounce(search, 400);
 
-  const LIMIT = 10;
+  function categoryLabel(
+    category:
+      | { name: string; parent?: { name: string } | null }
+      | null
+      | undefined
+  ) {
+    if (!category) return "—";
+    return category.parent
+      ? `${category.parent.name} • ${category.name}`
+      : category.name;
+  }
+
+  function firstImageUrl(
+    medias: Array<{ url: string; mediaType: string }> | null | undefined
+  ): string | null {
+    return medias?.find((m) => m.mediaType === "IMAGE")?.url ?? null;
+  }
+
+  const LIMIT = 25;
   const { data, previousData, refetch } = useFindAllProductsAdminQuery({
     variables: {
       filter: {
@@ -168,12 +187,26 @@ export default function AdminProductsPage() {
                   key={p.id}
                   className="flex items-start gap-3 border-b px-4 py-3.5 last:border-0"
                 >
+                  {/* Thumbnail */}
+                  <div className="bg-muted mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md border">
+                    {firstImageUrl(p.medias) ? (
+                      <Image
+                        src={firstImageUrl(p.medias)!}
+                        alt={p.name ?? ""}
+                        width={40}
+                        height={40}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <ImageOff className="text-muted-foreground h-4 w-4" />
+                    )}
+                  </div>
                   <div className="min-w-0 flex-1 space-y-1">
                     <p className="text-foreground leading-snug font-medium">
                       {p.name ?? "—"}
                     </p>
                     <p className="text-muted-foreground text-xs">
-                      {p.category?.name ?? "—"}
+                      {categoryLabel(p.category)}
                     </p>
                     <div className="flex flex-wrap items-baseline gap-4">
                       <span className="text-foreground text-sm font-medium">
@@ -258,6 +291,7 @@ export default function AdminProductsPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b">
+                <th className="text-muted-foreground w-14 py-2.5 pl-5 text-left text-xs font-medium" />
                 {[
                   t("name"),
                   t("category"),
@@ -268,7 +302,7 @@ export default function AdminProductsPage() {
                 ].map((h) => (
                   <th
                     key={h}
-                    className="text-muted-foreground px-4 py-2.5 text-left text-xs font-medium first:pl-5"
+                    className="text-muted-foreground px-4 py-2.5 text-left text-xs font-medium"
                   >
                     {h}
                   </th>
@@ -279,7 +313,7 @@ export default function AdminProductsPage() {
               {!displayData ? (
                 Array.from({ length: 6 }).map((_, i) => (
                   <tr key={i} className="border-b last:border-0">
-                    {Array.from({ length: 6 }).map((_, j) => (
+                    {Array.from({ length: 7 }).map((_, j) => (
                       <td key={j} className="px-4 py-3.5 first:pl-5">
                         <Skeleton
                           className="h-4"
@@ -292,7 +326,7 @@ export default function AdminProductsPage() {
               ) : products.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={6}
+                    colSpan={7}
                     className="text-muted-foreground px-5 py-12 text-center text-sm"
                   >
                     {t("noProducts")}
@@ -313,14 +347,30 @@ export default function AdminProductsPage() {
                         i < products.length - 1 && "border-b"
                       )}
                     >
-                      <td className="py-3.5 pr-4 pl-5">
+                      {/* Image thumbnail */}
+                      <td className="py-3.5 pr-2 pl-5">
+                        <div className="bg-muted flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border">
+                          {firstImageUrl(p.medias) ? (
+                            <Image
+                              src={firstImageUrl(p.medias)!}
+                              alt={p.name ?? ""}
+                              width={40}
+                              height={40}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <ImageOff className="text-muted-foreground h-4 w-4" />
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-3.5 pr-4 pl-2">
                         <p className="text-foreground font-medium">
                           {p.name ?? "—"}
                         </p>
                         <p className="text-muted-foreground text-xs">{p.id}</p>
                       </td>
                       <td className="text-muted-foreground px-4 py-3.5 text-sm">
-                        {p.category?.name ?? "—"}
+                        {categoryLabel(p.category)}
                       </td>
                       <td className="px-4 py-3.5">
                         <p className="text-foreground font-medium">

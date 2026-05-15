@@ -14,6 +14,7 @@ import { cn } from "@/utils/tw-merge";
 
 interface ProductInfoPanelProps {
   categoryName?: string | null;
+  subCategoryName?: string | null; // Added subcategory
   productName: string;
   finalPriceText: string;
   oldPriceText?: string | null;
@@ -29,6 +30,7 @@ interface ProductInfoPanelProps {
 
 export function ProductInfoPanel({
   categoryName,
+  subCategoryName,
   productName,
   finalPriceText,
   oldPriceText,
@@ -79,7 +81,11 @@ export function ProductInfoPanel({
       </h1>
       {categoryName && (
         <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
-          {t("category", { category: categoryName })}
+          {t("category", {
+            category: subCategoryName
+              ? `${categoryName} • ${subCategoryName}` // Updated to use '/' as separator
+              : categoryName,
+          })}
         </span>
       )}
 

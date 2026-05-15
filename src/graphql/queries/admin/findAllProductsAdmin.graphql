@@ -8,9 +8,17 @@ query FindAllProductsAdmin($filter: FilterProductInput) {
       stock
       isDraft
       isPublished
+      medias {
+        url
+        mediaType
+      }
       category {
         id
         name
+        parent {
+          id
+          name
+        }
       }
       createdAt
     }

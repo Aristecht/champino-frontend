@@ -67,14 +67,13 @@ export default function ProductPage() {
   const [createReview, { loading: creatingReview }] = useCreateReviewMutation();
   const [deleteReview, { loading: deletingReview }] = useDeleteReviewMutation();
 
-  const p = data?.findProductById;
+  const items = cartStore((s) => s.items);
   const addItem = cartStore((s) => s.addItem);
   const removeItem = cartStore((s) => s.removeItem);
   const setQuantity = cartStore((s) => s.setQuantity);
-  const inCart =
-    isAuthenticated
-      ? cartStore((s) => s.items.find((i) => i.productId === id)) ?? null
-      : null;
+  const inCart = isAuthenticated
+    ? (items.find((i) => i.productId === id) ?? null)
+    : null;
 
   if (loading)
     return (
@@ -82,7 +81,7 @@ export default function ProductPage() {
         <div className="bg-muted h-64 animate-pulse rounded-2xl" />
       </div>
     );
-  if (error || !p)
+  if (error || !data?.findProductById)
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-center">
         <Package className="text-muted-foreground h-12 w-12 opacity-30" />
@@ -93,6 +92,7 @@ export default function ProductPage() {
       </div>
     );
 
+  const p = data.findProductById;
   const hasDiscount = (p.discountPercent ?? 0) > 0;
   const finalPrice = hasDiscount
     ? (p.price ?? 0) * (1 - (p.discountPercent ?? 0) / 100)
@@ -137,7 +137,8 @@ export default function ProductPage() {
           discountPercent={p.discountPercent ?? 0}
         />
         <ProductInfoPanel
-          categoryName={p.category?.name}
+          categoryName={p.category?.parent?.name || p.category?.name}
+          subCategoryName={p.category?.parent ? p.category?.name : undefined}
           productName={p.name ?? t("defaultName")}
           finalPriceText={fmtMoney(finalPrice, locale)}
           oldPriceText={hasDiscount ? fmtMoney(p.price ?? 0, locale) : null}

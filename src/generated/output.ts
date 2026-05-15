@@ -832,7 +832,14 @@ export type ProductCategoryModel = {
   __typename?: 'ProductCategoryModel';
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  parent?: Maybe<ProductCategoryParentModel>;
   slug: Scalars['String']['output'];
+};
+
+export type ProductCategoryParentModel = {
+  __typename?: 'ProductCategoryParentModel';
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type ProductListModel = {
@@ -1475,7 +1482,7 @@ export type FindAllProductsAdminQueryVariables = Exact<{
 }>;
 
 
-export type FindAllProductsAdminQuery = { __typename?: 'Query', findAllProductsAdmin: { __typename?: 'ProductListModel', data: Array<{ __typename?: 'ProductModel', id: string, name?: string | null, price?: number | null, discountedPrice?: number | null, stock: number, isDraft: boolean, isPublished: boolean, createdAt: string, category?: { __typename?: 'ProductCategoryModel', id: string, name: string } | null }>, meta: { __typename?: 'ProductMetaModel', total: number, page: number, limit: number, totalPages: number } } };
+export type FindAllProductsAdminQuery = { __typename?: 'Query', findAllProductsAdmin: { __typename?: 'ProductListModel', data: Array<{ __typename?: 'ProductModel', id: string, name?: string | null, price?: number | null, discountedPrice?: number | null, stock: number, isDraft: boolean, isPublished: boolean, createdAt: string, medias?: Array<{ __typename?: 'ProductMediaModel', url: string, mediaType: MediaType }> | null, category?: { __typename?: 'ProductCategoryModel', id: string, name: string, parent?: { __typename?: 'ProductCategoryParentModel', id: string, name: string } | null } | null }>, meta: { __typename?: 'ProductMetaModel', total: number, page: number, limit: number, totalPages: number } } };
 
 export type FindAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1487,7 +1494,7 @@ export type FindProductByIdQueryVariables = Exact<{
 }>;
 
 
-export type FindProductByIdQuery = { __typename?: 'Query', findProductById: { __typename?: 'ProductModel', id: string, name?: string | null, price?: number | null, stock: number, isDraft: boolean, isPublished: boolean, categoryId?: string | null, description?: string | null, discountPercent?: number | null, createdAt: string, updatedAt: string, category?: { __typename?: 'ProductCategoryModel', id: string, name: string } | null, medias?: Array<{ __typename?: 'ProductMediaModel', id: string, url: string, mediaType: MediaType }> | null } };
+export type FindProductByIdQuery = { __typename?: 'Query', findProductById: { __typename?: 'ProductModel', id: string, name?: string | null, price?: number | null, stock: number, isDraft: boolean, isPublished: boolean, categoryId?: string | null, description?: string | null, discountPercent?: number | null, createdAt: string, updatedAt: string, category?: { __typename?: 'ProductCategoryModel', id: string, name: string, parent?: { __typename?: 'ProductCategoryParentModel', id: string, name: string } | null } | null, medias?: Array<{ __typename?: 'ProductMediaModel', id: string, url: string, mediaType: MediaType }> | null } };
 
 export type GetAnalyticsSummaryQueryVariables = Exact<{
   from: Scalars['String']['input'];
@@ -2787,9 +2794,17 @@ export const FindAllProductsAdminDocument = gql`
       stock
       isDraft
       isPublished
+      medias {
+        url
+        mediaType
+      }
       category {
         id
         name
+        parent {
+          id
+          name
+        }
       }
       createdAt
     }
@@ -2904,6 +2919,10 @@ export const FindProductByIdDocument = gql`
     category {
       id
       name
+      parent {
+        id
+        name
+      }
     }
     medias {
       id

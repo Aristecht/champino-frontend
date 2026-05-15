@@ -112,9 +112,18 @@ function ProductEditForm({ product }: { product: Product }) {
         </Link>
       </div>
 
-      <h1 className="text-foreground text-xl font-semibold">
-        Редактировать товар
-      </h1>
+      <div>
+        <h1 className="text-foreground text-xl font-semibold">
+          Редактировать товар
+        </h1>
+        {product.category && (
+          <p className="text-muted-foreground mt-1 text-sm">
+            {product.category.parent
+              ? `${product.category.parent.name} / ${product.category.name}`
+              : product.category.name}
+          </p>
+        )}
+      </div>
 
       <ProductForm
         productId={id}

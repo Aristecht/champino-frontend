@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { ImageOff, Loader2, MoreHorizontal, Plus, Search } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { cn } from "@/utils/tw-merge";
@@ -39,6 +38,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/common/ui/Pagination";
+import { storageUrl } from "@/utils/storage-url";
 
 function fmtPrice(n: number | null | undefined) {
   if (n == null) return "—";
@@ -189,17 +189,22 @@ export default function AdminProductsPage() {
                 >
                   {/* Thumbnail */}
                   <div className="bg-muted mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md border">
-                    {firstImageUrl(p.medias) ? (
-                      <Image
-                        src={firstImageUrl(p.medias)!}
-                        alt={p.name ?? ""}
-                        width={40}
-                        height={40}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <ImageOff className="text-muted-foreground h-4 w-4" />
-                    )}
+                    {(() => {
+                      const imgUrl = firstImageUrl(p.medias);
+                      const src = imgUrl ? storageUrl(imgUrl) : undefined;
+                      return src ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={src}
+                          alt={p.name ?? ""}
+                          width={40}
+                          height={40}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <ImageOff className="text-muted-foreground h-4 w-4" />
+                      );
+                    })()}
                   </div>
                   <div className="min-w-0 flex-1 space-y-1">
                     <p className="text-foreground leading-snug font-medium">
@@ -350,17 +355,22 @@ export default function AdminProductsPage() {
                       {/* Image thumbnail */}
                       <td className="py-3.5 pr-2 pl-5">
                         <div className="bg-muted flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border">
-                          {firstImageUrl(p.medias) ? (
-                            <Image
-                              src={firstImageUrl(p.medias)!}
-                              alt={p.name ?? ""}
-                              width={40}
-                              height={40}
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <ImageOff className="text-muted-foreground h-4 w-4" />
-                          )}
+                          {(() => {
+                            const imgUrl = firstImageUrl(p.medias);
+                            const src = imgUrl ? storageUrl(imgUrl) : undefined;
+                            return src ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={src}
+                                alt={p.name ?? ""}
+                                width={40}
+                                height={40}
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <ImageOff className="text-muted-foreground h-4 w-4" />
+                            );
+                          })()}
                         </div>
                       </td>
                       <td className="py-3.5 pr-4 pl-2">

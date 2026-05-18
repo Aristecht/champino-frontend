@@ -1,3 +1,0 @@
-mutation CancelOrder($orderId: String!) {
-  cancelOrder(orderId: $orderId)
-}

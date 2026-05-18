@@ -1,6 +1,0 @@
-mutation CreateDraftProduct {
-  createDraftProduct {
-    id
-    isDraft
-  }
-}

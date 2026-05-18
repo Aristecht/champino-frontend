@@ -1,3 +1,0 @@
-mutation RemoveCategory($id: String!) {
-  removeCategory(id: $id)
-}

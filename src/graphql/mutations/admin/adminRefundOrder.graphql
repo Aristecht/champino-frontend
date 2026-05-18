@@ -1,3 +1,0 @@
-mutation AdminRefundOrder($orderId: String!) {
-  adminRefundOrder(orderId: $orderId)
-}

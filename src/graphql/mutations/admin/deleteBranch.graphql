@@ -1,3 +1,0 @@
-mutation AdminDeleteBranch($id: String!) {
-  adminDeleteBranch(id: $id)
-}

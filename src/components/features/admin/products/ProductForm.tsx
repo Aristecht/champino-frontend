@@ -83,6 +83,9 @@ export function ProductForm({
   const [video, setVideo] = useState<MediaItem | null>(
     initialValues?.video ?? null
   );
+  const [imageMediaIdsToDelete, setImageMediaIdsToDelete] = useState<string[]>(
+    []
+  );
   const [videoMediaIdToDelete, setVideoMediaIdToDelete] = useState<
     string | null
   >(null);
@@ -103,6 +106,10 @@ export function ProductForm({
     setImages((prev) => {
       const next = [...prev];
       if (next[idx].file) URL.revokeObjectURL(next[idx].localUrl);
+      // Track remote image for deletion on submit
+      if (next[idx].mediaId) {
+        setImageMediaIdsToDelete((ids) => [...ids, next[idx].mediaId!]);
+      }
       next.splice(idx, 1);
       return next;
     });
@@ -169,6 +176,22 @@ export function ProductForm({
         setImages(currentImages);
       } catch {
         toast.error("Ошибка при загрузке изображений");
+        setSubmitting(false);
+        return;
+      }
+    }
+
+    // Delete removed images
+    if (imageMediaIdsToDelete.length > 0) {
+      try {
+        await Promise.all(
+          imageMediaIdsToDelete.map((mediaId) =>
+            deleteMedia(productId, mediaId)
+          )
+        );
+        setImageMediaIdsToDelete([]);
+      } catch {
+        toast.error("Ошибка при удалении изображений");
         setSubmitting(false);
         return;
       }

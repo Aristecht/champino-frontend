@@ -28,8 +28,13 @@ function resolveApiBaseUrl() {
   return "http://localhost:4000/api";
 }
 
-export function remoteToMediaItem(url: string): MediaItem {
-  return { localUrl: storageUrl(url) ?? url, file: null, remoteUrl: url };
+export function remoteToMediaItem(url: string, mediaId?: string): MediaItem {
+  return {
+    localUrl: storageUrl(url) ?? url,
+    file: null,
+    remoteUrl: url,
+    mediaId,
+  };
 }
 
 export async function uploadImages(

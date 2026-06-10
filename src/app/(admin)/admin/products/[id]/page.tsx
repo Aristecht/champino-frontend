@@ -69,14 +69,15 @@ function ProductEditForm({ product }: { product: Product }) {
 
   const initialImages = (product.medias ?? [])
     .filter((m) => m.mediaType === MediaType.Image)
-    .map((m) => remoteToMediaItem(m.url));
+    .map((m) => remoteToMediaItem(m.url, m.id));
 
   const initialVideoMedia = (product.medias ?? []).find(
     (m) => m.mediaType === MediaType.Video
   );
   const initialVideo = initialVideoMedia
     ? {
-        localUrl: remoteToMediaItem(initialVideoMedia.url).localUrl,
+        localUrl: remoteToMediaItem(initialVideoMedia.url, initialVideoMedia.id)
+          .localUrl,
         file: null,
         remoteUrl: initialVideoMedia.url,
         mediaId: initialVideoMedia.id,

@@ -13,7 +13,6 @@ export const createAccountSchema = (t: ValidationT) =>
     password: z
       .string()
       .min(6, t("passwordMin"))
-      .regex(/[A-Z]/, t("passwordUppercase"))
       .regex(/[0-9]/, t("passwordDigit")),
   });
 

@@ -3772,7 +3772,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "UserModel",
+                "name": "AuthModel",
                 "ofType": null
               }
             },

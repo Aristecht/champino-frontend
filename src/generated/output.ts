@@ -328,7 +328,7 @@ export type Mutation = {
   createOrder: OrderModel;
   createProduct: ProductModel;
   createReview: ReviewModel;
-  createUser: UserModel;
+  createUser: AuthModel;
   createVariant: ProductVariantModel;
   deactivateAccount: AuthModel;
   deleteAddress: Scalars['Boolean']['output'];
@@ -1373,7 +1373,7 @@ export type CreateUserMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserModel', id: string, username: string, email: string, isEmailVerified: boolean, isTotpEnabled: boolean, isVerified: boolean, role: Role, createdAt: string } };
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'AuthModel', message?: string | null, user?: { __typename?: 'UserModel', id: string, username: string, email: string, avatar?: string | null, role: Role, isEmailVerified: boolean, isTotpEnabled: boolean, isVerified: boolean, createdAt: string } | null } };
 
 export type DeactivateAccountMutationVariables = Exact<{
   data: DeactivateAccountInput;
@@ -2082,14 +2082,18 @@ export type CancelOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<C
 export const CreateUserDocument = gql`
     mutation CreateUser($data: CreateUserInput!) {
   createUser(data: $data) {
-    id
-    username
-    email
-    isEmailVerified
-    isTotpEnabled
-    isVerified
-    role
-    createdAt
+    user {
+      id
+      username
+      email
+      avatar
+      role
+      isEmailVerified
+      isTotpEnabled
+      isVerified
+      createdAt
+    }
+    message
   }
 }
     `;

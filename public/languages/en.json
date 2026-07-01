@@ -413,6 +413,8 @@
       "submit": "Create Account",
       "orContinueWith": "or continue with",
       "googleSignIn": "Sign in with Google",
+      "successToast": "Welcome!",
+      "usernameInvalidChar": "Only Latin letters, digits and underscores allowed",
       "validation": {
         "usernameMin": "Username must be at least 3 characters",
         "usernameMax": "Username must be at most 32 characters",

@@ -1,12 +1,16 @@
 mutation CreateUser($data: CreateUserInput!) {
   createUser(data: $data) {
-    id
-    username
-    email
-    isEmailVerified
-    isTotpEnabled
-    isVerified
-    role
-    createdAt
+    user {
+      id
+      username
+      email
+      avatar
+      role
+      isEmailVerified
+      isTotpEnabled
+      isVerified
+      createdAt
+    }
+    message
   }
 }

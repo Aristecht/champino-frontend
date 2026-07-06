@@ -32,6 +32,23 @@ COPY . .
 
 RUN bun run build
 
+# ---- Runner stage ----
+FROM oven/bun:1-alpine AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Копируем standalone-сборку (включает server.js, node_modules, и т.д.)
+COPY --from=base /app/.next/standalone ./
+
+# Копируем статические файлы (Next.js не включает их в standalone автоматически)
+COPY --from=base /app/.next/static ./.next/static
+
+# Копируем public-ассеты (если нужны в runtime)
+COPY --from=base /app/public ./public
+
 EXPOSE 3000
 
-CMD ["bun", "run", "start"]
+# Для output: "standalone" нужно запускать server.js, а не next start
+CMD ["node", "server.js"]

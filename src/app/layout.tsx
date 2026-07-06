@@ -3,46 +3,33 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import "../styles/globals.css";
-import { Geist } from "next/font/google";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { ToastProvider } from "@/providers/ToastProvider";
 import { TanstackQueryProvider } from "@/providers/TanstackQueryProvider";
 import { ServiceWorkerRegistrar } from "@/components/common/ServiceWorkerRegistrar";
 import { AuthInit } from "@/components/common/AuthInit";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://champino.kz";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://qadamcrm.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "ЧАМПИНО — зоомагазин в Атырау",
-    template: "%s | ЧАМПИНО",
+    default: "Qadam CRM",
+    template: "%s | Qadam CRM",
   },
   description:
-    "ЧАМПИНО ZOO — зоомагазин №1 в Атырау. Корма, лакомства, наполнители, игрушки и аксессуары для кошек, собак и других животных. Программа лояльности со скидками до 10%. Быстрая доставка, оплата онлайн и при получении.",
+    "Qadam CRM is a modern CRM workspace for sales, customer success, and operations teams that need a clear single-page command center.",
   keywords: [
-    "зоомагазин Атырау",
-    "ЧАМПИНО ZOO",
-    "купить корм для кошек Атырау",
-    "купить корм для собак Атырау",
-    "товары для животных Атырау",
-    "зоотовары",
-    "доставка зоотоваров Атырау",
-    "наполнитель для кошачьего туалета",
-    "лакомства для кошек",
-    "лакомства для собак",
-    "аксессуары для питомцев",
-    "игрушки для животных",
-    "программа лояльности зоомагазин",
-    "скидки зоомагазин",
-    "карта лояльности питомцы",
-    "ветеринарные товары Атырау",
-    "зоомагазин онлайн Казахстан",
+    "Qadam CRM",
+    "CRM",
+    "sales dashboard",
+    "customer success",
+    "pipeline analytics",
+    "operations command center",
   ],
-  applicationName: "ЧАМПИНО ZOO",
-  authors: [{ name: "ЧАМПИНО ZOO", url: siteUrl }],
-  category: "shopping",
+  applicationName: "Qadam CRM",
+  authors: [{ name: "Qadam CRM", url: siteUrl }],
+  category: "business",
   icons: {
     icon: [{ url: "/images/logo.png", type: "image/png" }],
     apple: "/images/logo.png",
@@ -53,25 +40,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    title: "ЧАМПИНО ZOO — зоомагазин в Атырау",
+    title: "Qadam CRM",
     description:
-      "Качественные товары для кошек, собак и других питомцев. Программа лояльности — накапливайте покупки и получайте скидку до 10%. Доставка по Атырау.",
-    siteName: "ЧАМПИНО ZOO",
-    locale: "ru_RU",
+      "A single-page CRM command center for analytics, customer management, and team execution.",
+    siteName: "Qadam CRM",
+    locale: "en_US",
     images: [
       {
         url: "/images/og-cover.png",
         width: 1200,
         height: 630,
-        alt: "ЧАМПИНО ZOO — зоомагазин в Атырау",
+        alt: "Qadam CRM",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ЧАМПИНО ZOO — зоомагазин в Атырау",
+    title: "Qadam CRM",
     description:
-      "Товары для питомцев: корма, лакомства, аксессуары. Программа лояльности и скидки. Доставка по Атырау.",
+      "A professional blue and cyan CRM experience for sales, customer success, and operations teams.",
     images: ["/images/og-cover.png"],
   },
   robots: {
@@ -103,68 +90,41 @@ export default async function RootLayout({
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "PetStore",
+        "@type": "Organization",
         "@id": `${siteUrl}/#organization`,
-        name: "ЧАМПИНО ZOO",
+        name: "Qadam CRM",
         url: siteUrl,
         logo: `${siteUrl}/images/logotype.png`,
         image: `${siteUrl}/images/og-cover.png`,
         description:
-          "Зоомагазин ЧАМПИНО ZOO в Атырау. Корма, лакомства, наполнители и аксессуары для питомцев. Программа лояльности — накапливайте покупки и получайте скидку до 10%.",
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Атырау",
-          addressCountry: "KZ",
+          "Qadam CRM helps teams manage pipeline, customer health, operations, and automations from a single-page command center.",
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": `${siteUrl}/#application`,
+        name: "Qadam CRM",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
         },
-        priceRange: "₸₸",
-        currenciesAccepted: "KZT",
-        paymentAccepted: "Cash, Credit Card, Online Payment",
-        openingHoursSpecification: [
-          {
-            "@type": "OpeningHoursSpecification",
-            dayOfWeek: [
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-              "Sunday",
-            ],
-            opens: "09:00",
-            closes: "21:00",
-          },
-        ],
-        hasOfferCatalog: {
-          "@type": "OfferCatalog",
-          name: "Товары для животных",
-          itemListElement: [
-            { "@type": "OfferCatalog", name: "Корма для кошек" },
-            { "@type": "OfferCatalog", name: "Корма для собак" },
-            { "@type": "OfferCatalog", name: "Наполнители" },
-            { "@type": "OfferCatalog", name: "Лакомства" },
-            { "@type": "OfferCatalog", name: "Аксессуары и игрушки" },
-          ],
-        },
-        memberOf: {
-          "@type": "ProgramMembership",
-          name: "Программа лояльности ЧАМПИНО ZOO",
-          description:
-            "Совершайте покупки и получайте скидку: 5 покупок — 2%, 15 покупок — 5%, 30 покупок — 8%, 50 покупок — 10%. Персональная карта лояльности с QR-кодом для каждого покупателя.",
-          programName: "ЧАМПИНО Лояльность",
-        },
+        description:
+          "A modern CRM workspace for managing deals, customer timelines, analytics, and internal operations.",
+        publisher: { "@id": `${siteUrl}/#organization` },
       },
       {
         "@type": "WebSite",
         "@id": `${siteUrl}/#website`,
         url: siteUrl,
-        name: "ЧАМПИНО ZOO",
+        name: "Qadam CRM",
         publisher: { "@id": `${siteUrl}/#organization` },
         potentialAction: {
           "@type": "SearchAction",
           target: {
             "@type": "EntryPoint",
-            urlTemplate: `${siteUrl}/catalog?q={search_term_string}`,
+            urlTemplate: `${siteUrl}/?q={search_term_string}`,
           },
           "query-input": "required name=search_term_string",
         },
@@ -173,7 +133,7 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang={locale} className={geist.variable} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"

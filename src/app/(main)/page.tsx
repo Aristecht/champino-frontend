@@ -3,29 +3,23 @@ import { HomePageClient } from "./HomePageClient";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "ЧАМПИНО — зоомагазин в Атырау",
+    absolute: "Qadam CRM — unified revenue command center",
   },
   description:
-    "Зоомагазин ЧАМПИНО в Атырау: корма, лакомства, наполнители и аксессуары для кошек, собак и других питомцев. Программа лояльности — 5 покупок даёт скидку 2%, 50 покупок — до 10%. Онлайн-заказ и быстрая доставка.",
+    "Qadam CRM is a modern, single-page CRM workspace with blue and cyan styling for sales, customer success, and operations teams.",
   keywords: [
-    "зоомагазин Атырау",
-    "зоомагазин",
-    "ЧАМПИНО ZOO",
-    "ЧАМПИНО",
-    "чампино",
-    "товары для питомцев",
-    "программа лояльности зоомагазин",
-    "скидки на зоотовары",
-    "карта лояльности питомцы",
-    "корм для кошек Атырау",
-    "корм для собак Атырау",
-    "доставка зоотоваров",
+    "Qadam CRM",
+    "CRM dashboard",
+    "single page CRM",
+    "sales workspace",
+    "customer success platform",
+    "business dashboard",
   ],
   alternates: { canonical: "/" },
   openGraph: {
-    title: "ЧАМПИНО — зоомагазин в Атырау",
+    title: "Qadam CRM — unified revenue command center",
     description:
-      "Товары для питомцев с доставкой по Атырау. Программа лояльности: накапливайте покупки и получайте скидку до 10% на весь ассортимент.",
+      "A professional single-page CRM experience for pipeline visibility, customer health, and team coordination.",
     url: "/",
     type: "website",
   },

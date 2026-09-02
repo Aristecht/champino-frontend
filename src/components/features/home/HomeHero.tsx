@@ -18,10 +18,10 @@ export function HomeHero() {
               <PackageCheck className="h-3.5 w-3.5" />
               {t("heroBadge")}
             </div>
-            <div className="bg-primary/90 text-card absolute top-2 -left-2 z-10 inline-flex w-full -rotate-8 items-center gap-2 px-3 py-1 text-xs font-semibold">
+            <div className="bg-primary/90 text-card absolute top-2 -left-2 z-10 inline-flex w-full -rotate-8 items-center gap-2 px-3 py-1 text-xs font-semibold sm:hidden">
               <span className="ml-1.5">{t("heroBadge")}</span>
             </div>
-            <h1 className="text-foreground z-10 mt-7 max-w-2xl text-3xl font-bold tracking-tight sm:hidden sm:text-5xl">
+            <h1 className="text-foreground z-10 mt-7 max-w-2xl text-3xl font-bold tracking-tight sm:mt-0 sm:text-5xl">
               {t("heroHeadingPre")}{" "}
               <span className="text-primary z-10">
                 {t("heroHeadingHighlight")}

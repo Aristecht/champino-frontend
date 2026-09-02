@@ -14,11 +14,14 @@ export function HomeHero() {
         <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-stretch lg:gap-6">
           {/* Hero text */}
           <div className="bg-card border-border relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border px-5 py-7 sm:px-8 sm:py-9">
-            <div className="bg-primary/10 text-primary z-10 mb-4 inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold">
+            <div className="bg-primary/10 text-primary z-10 mb-4 hidden w-fit items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold sm:inline-flex">
               <PackageCheck className="h-3.5 w-3.5" />
               {t("heroBadge")}
             </div>
-            <h1 className="text-foreground z-10 max-w-2xl text-3xl font-bold tracking-tight sm:text-5xl">
+            <div className="bg-primary/90 text-card absolute top-2 -left-2 z-10 inline-flex w-full -rotate-8 items-center gap-2 px-3 py-1 text-xs font-semibold">
+              <span className="ml-1.5">{t("heroBadge")}</span>
+            </div>
+            <h1 className="text-foreground z-10 mt-7 max-w-2xl text-3xl font-bold tracking-tight sm:hidden sm:text-5xl">
               {t("heroHeadingPre")}{" "}
               <span className="text-primary z-10">
                 {t("heroHeadingHighlight")}
@@ -51,7 +54,7 @@ export function HomeHero() {
                 height={450}
               />
             </div>
-            <div className="absolute -right-17 z-0 flex -translate-y-7 2xl:-right-10 2xl:-translate-y-18">
+            <div className="absolute -right-16 z-0 flex -translate-y-10 opacity-95 2xl:-right-10 2xl:-translate-y-18">
               <Image
                 alt="parrot"
                 src={"/images/parrot-2.png"}

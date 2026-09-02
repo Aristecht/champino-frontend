@@ -160,7 +160,15 @@
     "loyaltyTiersDesc": "Accumulate purchases and receive a discount on your next in-store purchase.",
     "loyaltyProgressBtn": "My progress",
     "loyaltyMaxLevel": "Maximum discount level reached",
-    "loyaltyQrAlt": "Loyalty card QR code"
+    "loyaltyQrAlt": "Loyalty card QR code",
+    "news": {
+      "title": "News & Tips",
+      "subtitle": "Care tips, promotions and new products for your pets",
+      "allNews": "All news",
+      "readMore": "Read more",
+      "loadError": "Failed to load news",
+      "noNews": "News coming soon"
+    }
   },
   "cart": {
     "title": "Cart",

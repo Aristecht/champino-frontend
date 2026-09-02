@@ -104,8 +104,7 @@ export function AppSidebar() {
         cartStore.getState().saveForUser(userId);
       }
       cartStore.getState().clearCart();
-      authStore.getState().setIsAuthenticated(false);
-      authStore.getState().setUser(null);
+      authStore.getState().clearAuth();
       router.push("/account/login");
     },
     onError() {

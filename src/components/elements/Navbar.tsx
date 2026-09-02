@@ -76,6 +76,7 @@ export function Navbar({ mobileSlot }: NavbarProps = {}) {
   const cartCount = cartStore((s) =>
     s.items.reduce((sum, item) => sum + item.quantity, 0)
   );
+  const showCartBadge = isAuthenticated && cartCount > 0;
   const router = useRouter();
 
   const [logout] = useLogoutUserMutation({
@@ -85,8 +86,7 @@ export function Navbar({ mobileSlot }: NavbarProps = {}) {
         cartStore.getState().saveForUser(userId);
       }
       cartStore.getState().clearCart();
-      authStore.getState().setIsAuthenticated(false);
-      authStore.getState().setUser(null);
+      authStore.getState().clearAuth();
       router.push("/account/login");
     },
     onError() {
@@ -140,7 +140,7 @@ export function Navbar({ mobileSlot }: NavbarProps = {}) {
             className="text-muted-foreground hover:text-foreground hover:bg-accent relative flex h-8 w-8 items-center justify-center rounded-lg transition-colors"
           >
             <ShoppingCart className="h-4 w-4" />
-            {cartCount > 0 && (
+            {showCartBadge && (
               <span className="bg-primary text-primary-foreground absolute -top-1 -right-2 min-w-4 rounded-full px-1 text-center text-[10px] leading-4 font-semibold">
                 {cartCount > 99 ? "99+" : cartCount}
               </span>

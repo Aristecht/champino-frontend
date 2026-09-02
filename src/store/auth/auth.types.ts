@@ -10,4 +10,5 @@ export interface AuthStore {
   user: UserProfile | null;
   setIsAuthenticated: (value: boolean) => void;
   setUser: (user: UserProfile | null) => void;
+  clearAuth: () => void;
 }

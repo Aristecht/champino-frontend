@@ -210,7 +210,12 @@ export function HomeProductsExplorer() {
         <div className="flex flex-wrap items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-9 gap-1.5">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 gap-1.5 select-none"
+                style={{ touchAction: "manipulation" }}
+              >
                 <ArrowUpDown className="h-3.5 w-3.5" />
                 <span>{t(`sort.${sortOption.labelKey}`)}</span>
                 <ChevronDown className="h-3.5 w-3.5 opacity-50" />

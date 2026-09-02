@@ -6,9 +6,9 @@ import { cartStore } from "@/store/cart/cart.store";
 import { useEffect } from "react";
 
 export function AuthInit() {
-  const { data, error } = useFindProfileQuery({
+  const { data, error, loading } = useFindProfileQuery({
     fetchPolicy: "network-only",
-    errorPolicy: "ignore",
+    errorPolicy: "none",
   });
 
   useEffect(() => {
@@ -25,12 +25,21 @@ export function AuthInit() {
     }
   }, [data]);
 
+  // Сессия прервана — сбрасываем всё немедленно
   useEffect(() => {
     if (error) {
-      authStore.getState().setIsAuthenticated(false);
-      authStore.getState().setUser(null);
+      authStore.getState().clearAuth();
+      cartStore.getState().clearCart();
     }
   }, [error]);
+
+  // Если запрос завершился без ошибки, но данных нет — тоже сбрасываем
+  useEffect(() => {
+    if (!loading && !error && !data?.findProfile) {
+      authStore.getState().clearAuth();
+      cartStore.getState().clearCart();
+    }
+  }, [loading, error, data]);
 
   return null;
 }
